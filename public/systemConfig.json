@@ -1,0 +1,143 @@
+{
+  "navList": [
+
+    {
+      "label": "搜索引擎",
+      "des": "",
+      "data": [
+        {
+          "label": "Bing",
+          "url": "https://bing.com",
+          "iconURL": "https://cn.bing.com/sa/simg/favicon-trans-bg-blue-mg-png.png",
+          "des": "必应搜索"
+        },
+        {
+          "label": "Google",
+          "url": "https://google.com",
+          "iconURL": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDUxMiA1MTIiIGlkPSJMYXllcl8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Zz48cGF0aCBkPSJNNDIuNCwxNDUuOWMxNS41LTMyLjMsMzcuNC01OS42LDY1LTgyLjNjMzcuNC0zMC45LDgwLjMtNDkuNSwxMjguNC01NS4yYzU2LjUtNi43LDEwOS42LDQsMTU4LjcsMzMuNCAgIGMxMi4yLDcuMywyMy42LDE1LjYsMzQuNSwyNC42YzIuNywyLjIsMi40LDMuNSwwLjEsNS43Yy0yMi4zLDIyLjItNDQuNiw0NC40LTY2LjcsNjYuOGMtMi42LDIuNi00LDIuNC02LjgsMC4zICAgYy02NC44LTQ5LjktMTU5LjMtMzYuNC0yMDcuNiwyOS42Yy04LjUsMTEuNi0xNS40LDI0LjEtMjAuMiwzNy43Yy0wLjQsMS4yLTEuMiwyLjMtMS44LDMuNWMtMTIuOS05LjgtMjUuOS0xOS42LTM4LjctMjkuNSAgIEM3Mi4zLDE2OSw1Ny4zLDE1Ny41LDQyLjQsMTQ1Ljl6IiBmaWxsPSIjRTk0MzM1Ii8+PHBhdGggZD0iTTEyNiwzMDMuOGM0LjMsOS41LDcuOSwxOS40LDEzLjMsMjguM2MyMi43LDM3LjIsNTUuMSw2MS4xLDk3LjgsNjkuNmMzOC41LDcuNyw3NS41LDIuNSwxMTAtMTYuOCAgIGMxLjItMC42LDIuNC0xLjIsMy41LTEuOGMwLjYsMC42LDEuMSwxLjMsMS43LDEuOGMyNS44LDIwLDUxLjcsNDAsNzcuNSw2MGMtMTIuNCwxMi4zLTI2LjUsMjIuMi00MS41LDMwLjggICBjLTQzLjUsMjQuOC05MC42LDM0LjgtMTQwLjIsMzFDMTg2LjMsNTAxLjksMTMzLDQ3Ny41LDg5LDQzMy41Yy0xOS4zLTE5LjMtMzUuMi00MS4xLTQ2LjctNjZjMTAuNy04LjIsMjEuNC0xNi4zLDMyLjEtMjQuNSAgIEM5MS42LDMyOS45LDEwOC44LDMxNi45LDEyNiwzMDMuOHoiIGZpbGw9IiMzNEE4NTMiLz48cGF0aCBkPSJNNDI5LjksNDQ0LjljLTI1LjgtMjAtNTEuNy00MC03Ny41LTYwYy0wLjYtMC41LTEuMi0xLjItMS43LTEuOGM4LjktNi45LDE4LTEzLjYsMjUuMy0yMi40ICAgYzEyLjItMTQuNiwyMC4zLTMxLjEsMjQuNS00OS42YzAuNS0yLjMsMC4xLTMuMS0yLjItM2MtMS4yLDAuMS0yLjMsMC0zLjUsMGMtNDAuOCwwLTgxLjctMC4xLTEyMi41LDAuMWMtNC41LDAtNS41LTEuMi01LjQtNS41ICAgYzAuMi0yOSwwLjItNTgsMC04N2MwLTMuNywxLTQuNyw0LjctNC43Yzc0LjgsMC4xLDE0OS42LDAuMSwyMjQuNSwwYzMuMiwwLDQuNSwwLjgsNS4zLDQuMmM2LjEsMjcuNSw1LjcsNTUuMSwyLDgyLjkgICBjLTMsMjIuMi04LjQsNDMuNy0xNi43LDY0LjVjLTEyLjMsMzAuNy0zMC40LDU3LjUtNTQuMiw4MC41QzQzMS42LDQ0My44LDQzMC43LDQ0NC4zLDQyOS45LDQ0NC45eiIgZmlsbD0iIzQyODVGMyIvPjxwYXRoIGQ9Ik0xMjYsMzAzLjhjLTE3LjIsMTMuMS0zNC40LDI2LjEtNTEuNiwzOS4yYy0xMC43LDguMS0yMS40LDE2LjMtMzIuMSwyNC41QzM0LDM1Mi4xLDI4LjYsMzM1LjgsMjQuMiwzMTkgICBjLTguNC0zMi41LTkuNy02NS41LTUuMS05OC42YzMuNi0yNiwxMS4xLTUxLDIzLjItNzQuNGMxNSwxMS41LDI5LjksMjMuMSw0NC45LDM0LjZjMTIuOSw5LjksMjUuOCwxOS43LDM4LjcsMjkuNSAgIGMtMi4yLDEwLjctNS4zLDIxLjItNi4zLDMyLjJjLTEuOCwyMCwwLjEsMzkuNSw1LjgsNTguN0MxMjUuOCwzMDEuOCwxMjUuOSwzMDIuOCwxMjYsMzAzLjh6IiBmaWxsPSIjRkFCQjA2Ii8+PC9nPjwvc3ZnPg==",
+          "des": "谷歌搜索"
+        }
+      ]
+    },
+    {
+      "label": "资源下载",
+      "des": "",
+      "data": [
+        {
+          "label": "panku8",
+          "url": "https://panku8.com",
+          "iconURL": "",
+          "des": "盘库吧 网盘搜索"
+        },
+        {
+          "label": "GreenVideo",
+          "url": "https://greenvideo.cc",
+          "iconURL": "",
+          "des": "GreenVideo 多平台视频下载"
+        }
+      ]
+    },
+    {
+      "label": "代码平台",
+      "des": "",
+      "data": [
+        {
+          "label": "GITHUB",
+          "url": "https://github.com",
+          "iconURL": "https://github.githubassets.com/favicons/favicon-dark.svg",
+          "des": "github"
+        },
+        {
+          "label": "MDN",
+          "url": "https://developer.mozilla.org",
+          "iconURL": "",
+          "des": "MDN 前端工程师数据库"
+        },
+        {
+          "label": "tailwindcss",
+          "url": "https://tailwindcss.com",
+          "iconURL": "",
+          "des": "tailwindcss CSS in HTML"
+        },
+        {
+          "label": "极速箱",
+          "url": "https://jisuxiang.com",
+          "iconURL": "",
+          "des": "极速箱 开发工具集合"
+        }
+      ]
+    },
+    {
+      "label": "NAS",
+      "des": "",
+      "data": [
+        {
+          "label": "alist-frp",
+          "url": "http://tw-taipei-1.lcf.im:27659/alist",
+          "iconURL": "https://alist.nn.ci/logo.svg",
+          "des": "NAS alist by frp"
+        },
+        {
+          "label": "alist-tailscale",
+          "url": "http://nas/alist",
+          "iconURL": "https://alist.nn.ci/logo.svg",
+          "des": "NAS alist by tailscale"
+        },
+        {
+          "label": "alist-星空组网",
+          "url": "http://192.168.188.1/alist",
+          "iconURL": "https://alist.nn.ci/logo.svg",
+          "des": "NAS alist by 星空组网"
+        },
+        {
+          "label": "nasCab-tailscale",
+          "url": "http://nas/nascab",
+          "iconURL": "",
+          "des": "NAS 可道云 by tailscale"
+        },
+        {
+          "label": "nasCab-星空组网",
+          "url": "http://192.168.188.1/nascab",
+          "iconURL": "",
+          "des": "NAS 可道云 by 星空组网"
+        },
+        {
+          "label": "gitea-星空组网",
+          "url": "http://192.168.188.1/gitea",
+          "iconURL": "",
+          "des": "gitea by 星空组网"
+        }
+      ]
+    },
+    {
+      "label": "frp",
+      "des": "",
+      "data": [
+        {
+          "label": "LoCyanFrp",
+          "url": "https://dashboard.locyanfrp.cn",
+          "iconURL": "",
+          "des": "LoCyanFrp 控制台"
+        },
+        {
+          "label": "盛月映射",
+          "url": "https://www.govfrp.com",
+          "iconURL": "",
+          "des": "盛月映射 控制台"
+        },
+        {
+          "label": "ME frp",
+          "url": "https://www.mefrp.com",
+          "iconURL": "",
+          "des": "ME frp"
+        },
+        {
+          "label": "HayFrp",
+          "url": "https://console.hayfrp.com",
+          "iconURL": "",
+          "des": "HayFrp"
+        }
+      ]
+    }
+  ]
+}
