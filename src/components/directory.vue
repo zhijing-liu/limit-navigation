@@ -104,7 +104,6 @@ import {
   SearchOutlined,
   SettingsSharp,
   KeyboardArrowLeftRound,
-  UploadFileFilled,
 } from "@vicons/material";
 
 const narrowScreen = ref(document.body.clientWidth < 600);
