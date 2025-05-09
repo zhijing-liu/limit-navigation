@@ -1,48 +1,63 @@
 <template>
-  <NConfigProvider :theme="settings.darkTheme? darkTheme:lightTheme" class="w-full">
-    <NGlobalStyle/>
+  <NConfigProvider
+    :theme="settings.darkTheme ? darkTheme : lightTheme"
+    class="w-full"
+  >
+    <NGlobalStyle />
     <NLayout hasSider class="h-full">
-      <Directory/>
-      <Container/>
+      <Directory />
+      <Container />
     </NLayout>
-    <Setting/>
+    <Setting />
   </NConfigProvider>
 </template>
 <script setup>
-import {darkTheme,lightTheme} from 'naive-ui'
-import Directory from './components/directory.vue'
-import Container from './components/container.vue'
-import Setting from './components/setting.vue'
-import {systemConfig, settings} from "./stores.js";
-import {toRaw, watch} from "vue";
+import { darkTheme, lightTheme } from "naive-ui";
+import Directory from "./components/directory.vue";
+import Container from "./components/container.vue";
+import Setting from "./components/setting.vue";
+import { systemConfig, settings } from "./stores.js";
+import { toRaw, watch } from "vue";
 
-watch(() => settings, async () => {
-  const data=(await Promise.allSettled(
-      [
-        settings.loadDefaultConfig?fetch(`/systemConfig.json?t=${new Date().getTime()}`, {
-          method: 'GET'
-        }).then(res => res.json()):[],
-        settings.externalDataUrl?fetch(settings.externalDataUrl,{
-          method:'GET'
-        }).then(r=>r.json()).catch(()=>({})):{}
-      ]
-  )).filter(item=>item.status==='fulfilled').map(item=>item.value)
-  const navList=data.map(item=>item.navList??[]).flat()
-  for (const item of data){
-    systemConfig.value={
-      ...systemConfig.value,
-      ...item,
+watch(
+  () => `${settings.loadDefaultConfig} ${settings.externalDataUrl}`,
+  async () => {
+    const data = (
+      await Promise.allSettled([
+        settings.loadDefaultConfig
+          ? fetch(`/systemConfig.json?t=${new Date().getTime()}`, {
+              method: "GET",
+            }).then((res) => res.json())
+          : [],
+        settings.externalDataUrl
+          ? fetch(settings.externalDataUrl, {
+              method: "GET",
+            })
+              .then((r) => r.json())
+              .catch(() => ({}))
+          : {},
+      ])
+    )
+      .filter((item) => item.status === "fulfilled")
+      .map((item) => item.value);
+    const navList = data.map((item) => item.navList ?? []).flat();
+    for (const item of data) {
+      systemConfig.value = {
+        ...systemConfig.value,
+        ...item,
+      };
     }
-  }
-  systemConfig.value={
-    ...systemConfig.value,
-    navList,
-  }
-  localStorage.setItem('settings',JSON.stringify(toRaw(settings)))
-},{
-  immediate:true,
-  deep:true
-})
+    systemConfig.value = {
+      ...systemConfig.value,
+      navList,
+    };
+    localStorage.setItem("settings", JSON.stringify(toRaw(settings)));
+  },
+  {
+    immediate: true,
+    deep: true,
+  },
+);
 </script>
 <style lang="stylus">
 body
