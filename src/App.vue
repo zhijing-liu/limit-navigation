@@ -51,11 +51,9 @@ watch(
       ...systemConfig.value,
       navList,
     };
-    localStorage.setItem("settings", JSON.stringify(toRaw(settings)));
   },
   {
     immediate: true,
-    deep: true,
   },
 );
 </script>
