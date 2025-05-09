@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import {NaiveUiResolver} from 'unplugin-vue-components/resolvers'
-
+import { viteSingleFile } from 'vite-plugin-singlefile'
 export default defineConfig({
     plugins: [
         tailwindcss(),
@@ -19,7 +19,12 @@ export default defineConfig({
         }),
         Components({
             resolvers: [NaiveUiResolver()]
-        })],
+        }),
+        {
+            ...viteSingleFile(),
+            apply: 'build'
+        }
+    ],
     server: {
         proxy: {
             '/req': `http://127.0.0.1:8888`
@@ -27,6 +32,6 @@ export default defineConfig({
     },
     build: {
         target:'esnext',
-        minify:'esbuild'
+        minify:'esbuild',
     }
 })

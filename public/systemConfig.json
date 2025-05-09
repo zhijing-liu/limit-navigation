@@ -1,6 +1,5 @@
 {
   "navList": [
-
     {
       "label": "搜索引擎",
       "des": "",
@@ -24,16 +23,46 @@
       "des": "",
       "data": [
         {
-          "label": "panku8",
-          "url": "https://panku8.com",
-          "iconURL": "",
-          "des": "盘库吧 网盘搜索"
-        },
-        {
           "label": "GreenVideo",
           "url": "https://greenvideo.cc",
           "iconURL": "",
           "des": "GreenVideo 多平台视频下载"
+        },
+        {
+          "label": "磁力悠悠",
+          "url": "https://www.ciliuu.com",
+          "iconURL": "",
+          "des": "磁力悠悠 磁力搜索平台"
+        }
+      ]
+    },
+    {
+      "label": "音乐平台",
+      "des": "",
+      "data": [
+        {
+          "label": "alist-player",
+          "url": "http://alist-player.zhijing.space",
+          "iconURL": "",
+          "des": "依赖alist服务的远程音乐服务器"
+        },
+        {
+          "label": "音乐榜",
+          "url": "https://www.mp3b.com",
+          "iconURL": "https://www.mp3b.com/logo.png",
+          "des": "音乐榜 音乐试听下载平台"
+        },
+        {
+          "label": "熊猫无损音乐",
+          "url": "https://www.xmwav.com",
+          "iconURL": "",
+          "des": "熊猫无损音乐 音乐试听下载平台"
+        },
+        {
+          "label": "Radiocast",
+          "url": "https://radiocast.co",
+          "iconURL": "",
+          "des": "radiocast 全球电台在线收听"
         }
       ]
     },
@@ -64,6 +93,18 @@
           "url": "https://jisuxiang.com",
           "iconURL": "",
           "des": "极速箱 开发工具集合"
+        },
+        {
+          "label": "electron",
+          "url": "https://www.electronjs.org",
+          "iconURL": "",
+          "des": "electron 前端跨端平台"
+        },
+        {
+          "label": "echarts",
+          "url": "https://echarts.apache.org",
+          "iconURL": "",
+          "des": "echarts js图表库"
         }
       ]
     },
@@ -128,7 +169,7 @@
         {
           "label": "ME frp",
           "url": "https://www.mefrp.com",
-          "iconURL": "",
+          "iconURL": "https://www.mefrp.com/favicon.svg",
           "des": "ME frp"
         },
         {
@@ -136,6 +177,66 @@
           "url": "https://console.hayfrp.com",
           "iconURL": "",
           "des": "HayFrp"
+        }
+      ]
+    },
+    {
+      "label": "服务平台",
+      "des": "",
+      "data": [
+        {
+          "label": "hostinger",
+          "url": "https://hpanel.hostinger.com",
+          "iconURL": "https://hpanel.hostinger.com/assets/images/H-outline-static.svg",
+          "des": "hostinger 域名服务商"
+        },
+        {
+          "label": "xcidc",
+          "url": "https://idc.xcidc.fun",
+          "iconURL": "",
+          "des": "xcidc 服务器虚拟主机提供商"
+        },
+        {
+          "label": "顶级机场",
+          "url": "https://顶级机场.com",
+          "iconURL": "",
+          "des": "顶级机场 VPN 服务商"
+        },
+        {
+          "label": "西红柿",
+          "url": "https://www.xihoogsi.com",
+          "iconURL": "",
+          "des": "西红柿 VPN 服务商"
+        }
+      ]
+    },
+    {
+      "label": "系统工具",
+      "des": "",
+      "data": [
+        {
+          "label": "x-cmd",
+          "url": "https://cn.x-cmd.com",
+          "iconURL": "",
+          "des": "x-cmd 命令行强化工具"
+        },
+        {
+          "label": "又要重装",
+          "url": "https://www.yyczxt.com",
+          "iconURL": "",
+          "des": "又要重装 系统镜像下载站"
+        }
+      ]
+    },
+    {
+      "label": "前端开发工具",
+      "des": "",
+      "data": [
+        {
+          "label": "Naive UI",
+          "url": "https://www.naiveui.com/",
+          "iconURL": "https://www.naiveui.com/assets/naivelogo-BdDVTUmz.svg",
+          "des": "Naive UI Vue3 框架"
         }
       ]
     }

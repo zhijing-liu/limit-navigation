@@ -1,16 +1,18 @@
 <template>
-  <NConfigProvider :theme="darkTheme" class="w-full">
+  <NConfigProvider :theme="settings.darkTheme? darkTheme:lightTheme" class="w-full">
     <NGlobalStyle/>
     <NLayout hasSider class="h-full">
       <Directory/>
       <Container/>
     </NLayout>
+    <Setting/>
   </NConfigProvider>
 </template>
 <script setup>
-import {darkTheme} from 'naive-ui'
+import {darkTheme,lightTheme} from 'naive-ui'
 import Directory from './components/directory.vue'
 import Container from './components/container.vue'
+import Setting from './components/setting.vue'
 import {systemConfig, settings} from "./stores.js";
 import {toRaw, watch} from "vue";
 
