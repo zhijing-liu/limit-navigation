@@ -7,6 +7,7 @@
       class="h-full overflow-auto bg-transparent!"
       :class="{ 'snap-y': settings.listScrollAdsorption }"
       :showDivider="false"
+      v-if="getNavList?.length > 0"
     >
       <NListItem
         v-for="item in getNavList"
@@ -60,17 +61,16 @@
         </NCard>
       </NListItem>
     </NList>
+    <NFlex v-else justify="center" align="center" class="h-full">
+      <NButton secondary @click="() => (settingDialogVisible = true)"
+        >配置源</NButton
+      >
+    </NFlex>
   </NLayoutContent>
 </template>
 <script setup>
-import { getNavList, settings } from "../stores.js";
+import { getNavList, settings, settingDialogVisible } from "../stores.js";
 import iconImage from "../assets/icon.png";
 </script>
 
-<style scoped lang="stylus">
-.bbb
-  grid-template-rows: auto;
-
-.aaa
-  grid-row-end: span 2
-</style>
+<style scoped lang="stylus"></style>

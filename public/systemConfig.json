@@ -23,6 +23,12 @@
       "des": "",
       "data": [
         {
+          "label": "盘库吧",
+          "url": "https://panku8.com",
+          "iconURL": "",
+          "des": "盘库吧 网盘搜索"
+        },
+        {
           "label": "GreenVideo",
           "url": "https://greenvideo.cc",
           "iconURL": "",

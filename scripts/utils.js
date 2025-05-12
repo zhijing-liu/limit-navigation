@@ -1,4 +1,5 @@
 import { Client } from "basic-ftp";
+import { join } from "node:path";
 
 export class Ftp {
   config = {};
@@ -9,8 +10,9 @@ export class Ftp {
   async connect() {
     return this.client.access(this.config);
   }
-  async uploadFile(from, to) {
-    await this.client.uploadFrom(from, to);
+  async uploadFile(from, to, fileName) {
+    await this.client.ensureDir(to);
+    await this.client.uploadFrom(join(from, fileName), fileName);
     return this;
   }
   async uploadDir(from, to) {
