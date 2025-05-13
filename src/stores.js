@@ -12,9 +12,11 @@ export const settings = reactive({
   listScrollAdsorption: true,
   aElementTarget: "_blank",
   useSearchShortcutKey: true,
+  lang: "zh-CHS",
   ...JSON.parse(localStorage.getItem("settings") ?? "{}"),
 });
 export const settingDialogVisible = ref(false);
+export const searchDialogVisible = ref(false);
 watch(
   () => settings,
   () => {

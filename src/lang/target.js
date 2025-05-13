@@ -1,0 +1,35 @@
+export const targets = {
+  "zh-CHS": "简体中文",
+  "zh-CHT": "繁體中文",
+  en: "English",
+  fr: "Français",
+  ja: "日本語",
+  de: "Deutsch",
+  ru: "Русский",
+};
+export const settingOptions = (() =>
+  Object.keys(targets).map((key) => ({ label: targets[key], value: key })))();
+export const languages = {
+  "zh-CN": "zh-CHS",
+  "zh-TW": "zh-CHT",
+  "zh-HK": "zh-CHT",
+  zh: "zh-CHS",
+  en: "en",
+  "en-IE": "en",
+  "en-AU": "en",
+  "en-CA": "en",
+  "en-US": "en",
+  "en-ZA": "en",
+  "en-NZ": "en",
+  "en-IN": "en",
+  fr: "fr",
+  "fr-FR": "fr",
+  "fr-CA": "fr",
+  "fr-CH": "fr",
+  ja: "ja",
+  de: "de",
+  "de-AT": "de",
+  "de-DE": "de",
+  "de-CH": "de",
+  ru: "ru",
+};

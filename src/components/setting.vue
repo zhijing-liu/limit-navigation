@@ -3,25 +3,25 @@
     v-model:show="settingDialogVisible"
     preset="dialog"
     type="success"
-    title="设置"
+    :title="getLangData('设置')"
     class="w-[550px]!"
-    positiveText="完成"
+    :positiveText="getLangData('完成')"
     :closeOnEsc="false"
     :maskClosable="false"
   >
     <template #close>
       <NFlex>
-        <NButton secondary size="small" @click="outputConfig" type="tertiary"
-          >导出</NButton
-        >
-        <NButton secondary size="small" @click="inputConfig" type="primary"
-          >导入</NButton
-        >
+        <NButton secondary size="small" @click="outputConfig" type="tertiary">{{
+          getLangData("导出")
+        }}</NButton>
+        <NButton secondary size="small" @click="inputConfig" type="primary">{{
+          getLangData("导入")
+        }}</NButton>
       </NFlex>
     </template>
     <NFlex class="h-[40vh] overflow-auto" vertical>
       <NCard
-        title="样式与喜好 :"
+        :title="`${getLangData('样式与喜好')} :`"
         :bordered="false"
         size="small"
         headerClass="px-2!"
@@ -30,47 +30,61 @@
         <NList size="small">
           <NListItem>
             <NFlex justify="space-between">
-              <span>深色模式 :</span>
+              <span class="flex-1">{{ getLangData("深色模式") }} :</span>
               <NSwitch v-model:value="settings.darkTheme"></NSwitch>
             </NFlex>
           </NListItem>
           <NListItem>
             <NFlex justify="space-between">
-              <span>默认展开菜单 :</span>
+              <span class="flex-1">{{ getLangData("默认展开菜单") }} :</span>
               <NSwitch v-model:value="settings.menuDefaultExpandAll"></NSwitch>
             </NFlex>
           </NListItem>
           <NListItem>
             <NFlex justify="space-between">
-              <span>列表滚动吸附 :</span>
+              <span class="flex-1">{{ getLangData("列表滚动吸附") }} :</span>
               <NSwitch v-model:value="settings.listScrollAdsorption"></NSwitch>
             </NFlex>
           </NListItem>
           <NListItem>
             <NFlex justify="space-between">
-              <span>新页面打开方式 :</span>
+              <span class="flex-1">{{ getLangData("新页面打开方式") }} :</span>
               <NSelect
-                class="flex-[0_0_150px]"
+                class="flex-[0_0_200px]"
                 v-model:value="settings.aElementTarget"
                 size="small"
                 :options="[
-                  { label: '新页面打开', value: '_blank' },
-                  { label: '当前页打开', value: '_self' },
+                  { label: getLangData('新页面打开'), value: '_blank' },
+                  { label: getLangData('当前页打开'), value: '_self' },
                 ]"
-                placeholder="选择类型"
+                :placeholder="getLangData('选择类型')"
               ></NSelect>
             </NFlex>
           </NListItem>
           <NListItem>
             <NFlex justify="space-between">
-              <span>是否启用搜索快捷键 :</span>
+              <span class="flex-1">{{ getLangData("语言") }} :</span>
+              <NSelect
+                class="flex-[0_0_200px]"
+                v-model:value="settings.lang"
+                size="small"
+                :options="settingOptions"
+                :placeholder="getLangData('选择语言')"
+              ></NSelect>
+            </NFlex>
+          </NListItem>
+          <NListItem>
+            <NFlex justify="space-between">
+              <span class="flex-1"
+                >{{ getLangData("是否启用搜索快捷键") }} :</span
+              >
               <NSwitch v-model:value="settings.useSearchShortcutKey"></NSwitch>
             </NFlex>
           </NListItem>
         </NList>
       </NCard>
       <NCard
-        title="配置 :"
+        :title="`${getLangData('配置')} :`"
         :bordered="false"
         size="small"
         headerClass="px-2!"
@@ -79,12 +93,12 @@
         <NList size="small">
           <NListItem>
             <NFlex justify="space-between" align="center">
-              <span>外部配置项地址 :</span>
-              <NFlex class="flex-1" justify="flex-end">
+              <span class="flex-1">{{ getLangData("外部配置项地址") }} :</span>
+              <NFlex class="flex-1 flex-nowrap!" justify="flex-end">
                 <NInput
                   v-model:value="settings.externalDataUrl"
                   class="flex-[0_0_200px]"
-                  placeholder="接口地址 , 只支持GET请求"
+                  :placeholder="`${getLangData('接口地址')} , ${getLangData('只支持GET请求')}`"
                 >
                 </NInput>
                 <NButton
@@ -104,7 +118,7 @@
           </NListItem>
           <NListItem>
             <NFlex justify="space-between">
-              <span>加载默认设置 :</span>
+              <span class="flex-1">{{ getLangData("加载默认设置") }} :</span>
               <NSwitch v-model:value="settings.loadDefaultConfig"></NSwitch>
             </NFlex>
           </NListItem>
@@ -113,10 +127,12 @@
     </NFlex>
   </NModal>
 </template>
-<script setup lang="ts">
-import { reactive, ref, toRaw } from "vue";
+<script setup>
+import { toRaw } from "vue";
 import { UploadFileFilled } from "@vicons/material";
 import { settings, settingDialogVisible } from "../stores.js";
+import { getLangData, settingOptions } from "../lang";
+
 const inputConfig = async () => {
   const input = document.createElement("input");
   input.type = "file";

@@ -1,37 +1,42 @@
-import {defineConfig} from 'vite'
-import vue from '@vitejs/plugin-vue'
-import tailwindcss from '@tailwindcss/vite'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import {NaiveUiResolver} from 'unplugin-vue-components/resolvers'
-import { viteSingleFile } from 'vite-plugin-singlefile'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import tailwindcss from "@tailwindcss/vite";
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
+import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
+import { viteSingleFile } from "vite-plugin-singlefile";
 export default defineConfig({
-    plugins: [
-        tailwindcss(),
-        vue(),
-        AutoImport({
-            imports: [
-                'vue',
-                {
-                    'naive-ui': ['useDialog', 'useMessage', 'useNotification', 'useLoadingBar']
-                }
-            ]
-        }),
-        Components({
-            resolvers: [NaiveUiResolver()]
-        }),
+  plugins: [
+    tailwindcss(),
+    vue(),
+    AutoImport({
+      imports: [
+        "vue",
         {
-            ...viteSingleFile(),
-            apply: 'build'
-        }
-    ],
-    server: {
-        proxy: {
-            '/req': `http://127.0.0.1:8888`
-        }
+          "naive-ui": [
+            "useDialog",
+            "useMessage",
+            "useNotification",
+            "useLoadingBar",
+          ],
+        },
+      ],
+    }),
+    Components({
+      resolvers: [NaiveUiResolver()],
+    }),
+    // {
+    //     ...viteSingleFile(),
+    //     apply: 'build'
+    // }
+  ],
+  server: {
+    proxy: {
+      "/req": `http://127.0.0.1:8888`,
     },
-    build: {
-        target:'esnext',
-        minify:'esbuild',
-    }
-})
+  },
+  build: {
+    target: "esnext",
+    minify: "esbuild",
+  },
+});

@@ -62,15 +62,20 @@
       </NListItem>
     </NList>
     <NFlex v-else justify="center" align="center" class="h-full">
-      <NButton secondary @click="() => (settingDialogVisible = true)"
-        >配置源</NButton
-      >
+      <NEmpty :description="getLangData('没有配置数据源或数据源无数据')">
+        <template #extra>
+          <NButton secondary @click="() => (settingDialogVisible = true)">{{
+            getLangData("前往设置配置数据源")
+          }}</NButton>
+        </template>
+      </NEmpty>
     </NFlex>
   </NLayoutContent>
 </template>
 <script setup>
 import { getNavList, settings, settingDialogVisible } from "../stores.js";
 import iconImage from "../assets/icon.png";
+import { getLangData } from "../lang/index.js";
 </script>
 
 <style scoped lang="stylus"></style>

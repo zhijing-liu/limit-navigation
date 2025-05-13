@@ -28,12 +28,13 @@
             secondary
             type="primary"
             @click="() => (searchDialogVisible = true)"
-            class="flex-1 rounded!"
+            class="flex-[1_0_160px] rounded!"
           >
             <template #icon>
               <SearchOutlined />
             </template>
-            搜索 {{ settings.useSearchShortcutKey ? "( CTRL+S )" : "" }}
+            {{ getLangData("搜索") }}
+            {{ settings.useSearchShortcutKey ? "( CTRL+S )" : "" }}
           </NButton>
           <NButton
             circle
@@ -58,46 +59,30 @@
         :defaultExpandAll="settings.menuDefaultExpandAll"
         :watchProps="['defaultExpandedKeys']"
         class="flex-1 overflow-auto! scrollbar-none capitalize"
+        v-if="getNavList?.length > 0"
       >
       </NMenu>
-    </NFlex>
-    <NModal
-      v-model:show="searchDialogVisible"
-      preset="dialog"
-      type="success"
-      title="搜索地址"
-      class="w-[600px]!"
-    >
-      <NFlex vertical class="overflow-hidden h-[40vh] py-2">
-        <NInput
-          v-model:value="searchValue"
-          ref="searchInputIns"
-          placeholder="搜索地址"
-          @keydown="searchKeyDown"
-        ></NInput>
-        <NList class="flex-1 overflow-auto">
-          <NListItem
-            v-for="(item, index) in searchResult"
-            :key="item"
-            class="p-0! leading-12"
-            :class="{ 'bg-teal-900': index === searchIndex }"
-          >
-            <a
-              :ref="(ins) => index === searchIndex && (searchActiveItem = ins)"
-              :href="item.url"
-              target="_blank"
-              class="w-full h-full inline-block px-2 hover:bg-gray-700 rounded"
-              >{{ item.label }} - [ {{ item.des }} ]
-            </a>
-          </NListItem>
-        </NList>
+      <NFlex v-else justify="center" align="center" class="h-full">
+        <NEmpty :description="getLangData('没有配置数据源或数据源无数据')">
+          <template #extra>
+            <NButton secondary @click="() => (settingDialogVisible = true)">{{
+              getLangData("前往设置配置数据源")
+            }}</NButton>
+          </template>
+        </NEmpty>
       </NFlex>
-    </NModal>
+    </NFlex>
+    <Search />
   </NLayoutSider>
 </template>
 <script setup>
-import { getNavList, settings, settingDialogVisible } from "../stores.js";
-import { computed, h, toRaw, watch } from "vue";
+import {
+  getNavList,
+  settings,
+  settingDialogVisible,
+  searchDialogVisible,
+} from "../stores.js";
+import { computed, defineAsyncComponent, h, hydrateOnIdle, watch } from "vue";
 import { NIcon, NImage } from "naive-ui";
 import iconImage from "../assets/icon.png";
 import {
@@ -105,54 +90,13 @@ import {
   SettingsSharp,
   KeyboardArrowLeftRound,
 } from "@vicons/material";
-
+import { getLangData } from "../lang/index.js";
+const Search = defineAsyncComponent({
+  loader: () => import("./search.vue"),
+  hydrate: hydrateOnIdle(),
+});
 const narrowScreen = ref(document.body.clientWidth < 600);
 const collapsed = ref(narrowScreen.value);
-const searchDialogVisible = ref(false);
-const searchValue = ref("");
-const searchInputIns = ref();
-const searchIndex = ref(-1);
-const searchActiveItem = ref();
-const childrenItemsText = computed(() =>
-  getNavList.value
-    .map((item) => item.data)
-    .flat()
-    .map((item) => JSON.stringify(item)),
-);
-const searchResult = computed(() => {
-  const reg = new RegExp(`${searchValue.value.trim()}`, "g");
-  const list = childrenItemsText.value
-    .filter((item) => reg.test(item))
-    .map((item) => JSON.parse(item));
-  searchIndex.value = Math.min(
-    list.length - 1,
-    Math.max(-1, searchIndex.value),
-  );
-  return list;
-});
-const searchKeyDown = ({ key }) => {
-  if (key === "ArrowDown") {
-    searchIndex.value = Math.min(
-      searchResult.value.length - 1,
-      Math.max(-1, searchIndex.value + 1),
-    );
-  } else if (key === "ArrowUp") {
-    searchIndex.value = Math.min(
-      searchResult.value.length - 1,
-      Math.max(-1, searchIndex.value - 1),
-    );
-  } else if (key === "Enter") {
-    searchActiveItem.value?.click();
-  }
-};
-watch(
-  () => searchActiveItem.value,
-  () => {
-    searchActiveItem.value?.scrollIntoView({
-      block: "center",
-    });
-  },
-);
 const renderIcon = ({ iconURL, url }) =>
   iconURL || url
     ? h(NIcon, null, () =>
@@ -172,16 +116,6 @@ const renderLabel = ({ url, label }) => {
     return label;
   }
 };
-window.addEventListener("keydown", (e) => {
-  if (e.ctrlKey && e.key === "s" && settings.useSearchShortcutKey) {
-    searchDialogVisible.value = true;
-    nextTick(() => {
-      searchInputIns.value.focus();
-    });
-    e.stopPropagation();
-    e.preventDefault();
-  }
-});
 </script>
 
 <style scoped lang="stylus"></style>

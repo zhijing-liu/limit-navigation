@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "build&Upload": "node scripts/build-push/index.js",
-    "updateSystemConfig": "node scripts/build-push/updateSystemConfig.js"
+    "updateSystemConfig": "node scripts/build-push/updateSystemConfig.js",
+    "lang": "bun scripts/translate/tool/index.js path=src/lang",
+    "auto lang": "bun scripts/translate/index.js"
   },
   "dependencies": {
     "basic-ftp": "^5.0.5",
