@@ -11,7 +11,7 @@
       :delay="300"
       size="small"
     >
-      <NLayout hasSider class="h-full">
+      <NLayout hasSider class="h-full" v-if="!loading">
         <Directory />
         <Container />
       </NLayout>
