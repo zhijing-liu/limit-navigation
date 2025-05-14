@@ -24,4 +24,6 @@ export const dataList = {
   加载默认设置: "Charger les paramètres par défaut",
   语言: "Langue (S)",
   选择语言: "Choisissez votre langue",
+  输入搜索地址或搜索内容:
+    "Entrez une adresse de recherche ou recherchez du contenu",
 };

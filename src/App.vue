@@ -53,6 +53,7 @@ watch(
       .filter((item) => item.status === "fulfilled")
       .map((item) => item.value);
     const navList = data.map((item) => item.navList ?? []).flat();
+    const searchSource = data.map((item) => item.searchSource ?? []).flat();
     for (const item of data) {
       systemConfig.value = {
         ...systemConfig.value,
@@ -62,6 +63,7 @@ watch(
     systemConfig.value = {
       ...systemConfig.value,
       navList,
+      searchSource,
     };
     loading.value = false;
   },

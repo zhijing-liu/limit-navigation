@@ -3,16 +3,52 @@
     v-model:show="searchDialogVisible"
     preset="dialog"
     type="success"
-    :title="getLangData('搜索地址')"
+    :title="getLangData('搜索')"
     class="w-[600px]!"
+    :closeOnEsc="!searchActiveItem"
   >
     <NFlex vertical class="overflow-hidden h-[40vh] py-2">
-      <NInput
-        v-model:value="searchValue"
-        ref="searchInputIns"
-        :placeholder="getLangData('搜索地址')"
-        @keydown="searchKeyDown"
-      ></NInput>
+      <NInputGroup>
+        <NDropdown
+          v-if="settings.searchSource"
+          labelField="label"
+          keyField="url"
+          :options="getSearchSource"
+          :renderOption="searchIconRender"
+          :showArrow="false"
+          :showCheckmark="false"
+          trigger="hover"
+        >
+          <NButton secondary circle class="rounded!">
+            <template #icon>
+              <NIcon>
+                <img :src="settings.searchSource.icon" alt="" />
+              </NIcon>
+            </template>
+          </NButton>
+        </NDropdown>
+        <NInput
+          v-model:value="searchValue"
+          ref="searchInputIns"
+          :placeholder="getLangData('输入搜索地址或搜索内容')"
+          @keydown="searchKeyDown"
+          @fucus="() => (inputIsFocus = true)"
+          @blur="() => (inputIsFocus = false)"
+        ></NInput>
+        <NButton
+          secondary
+          @click="arrive"
+          :disabled="searchValueEmpty"
+          type="primary"
+        >
+          <template #icon>
+            <NIcon>
+              <ArrowForwardFilled v-if="searchValueIsUrl" />
+              <SearchFilled v-else />
+            </NIcon>
+          </template>
+        </NButton>
+      </NInputGroup>
       <NList class="flex-1 overflow-auto">
         <NListItem
           v-for="(item, index) in searchResult"
@@ -21,10 +57,10 @@
           :class="{ 'bg-teal-900': index === searchIndex }"
         >
           <a
-            :ref="(ins) => index === searchIndex && (searchActiveItem = ins)"
             :href="item.url"
-            target="_blank"
+            :target="settings.aElementTarget"
             class="w-full h-full inline-block px-2 hover:bg-gray-700 rounded"
+            :class="{ searchActive: index === searchIndex }"
             >{{ item.label }} - [ {{ item.des }} ]
           </a>
         </NListItem>
@@ -33,15 +69,27 @@
   </NModal>
 </template>
 <script setup>
-import { getNavList, searchDialogVisible, settings } from "../stores.js";
+import {
+  getNavList,
+  getSearchSource,
+  searchDialogVisible,
+  settings,
+} from "../stores.js";
+import { ArrowForwardFilled, SearchFilled } from "@vicons/material";
 import { getLangData } from "../lang";
-import { computed, watch } from "vue";
+import { computed, h, watch } from "vue";
+import { NButton, NIcon } from "naive-ui";
 
 const searchValue = ref("");
+const searchValueEmpty = computed(() => searchValue.value.trim().length === 0);
 const searchInputIns = ref();
 const searchIndex = ref(-1);
-const searchActiveItem = ref();
+const searchActiveItem = ref(null);
+const inputIsFocus = ref(false);
 
+const urlReg =
+  /^(?:(http|https|ftp):\/\/)?((?:[\w-]+\.)+[a-z0-9]+)((?:\/[^/?#]*)+)?(\?[^#]+)?(#.+)?$/i;
+const searchValueIsUrl = computed(() => urlReg.test(searchValue.value.trim()));
 const childrenItemsText = computed(() =>
   getNavList.value
     .map((item) => item.data)
@@ -59,6 +107,19 @@ const searchResult = computed(() => {
   );
   return list;
 });
+const arrive = () => {
+  if (!searchValueEmpty.value) {
+    window.open(
+      searchValueIsUrl.value
+        ? searchValue.value
+        : settings.searchSource.url.replace(
+            "{{data}}",
+            searchValue.value.replaceAll(" ", "+"),
+          ),
+      settings.aElementTarget,
+    );
+  }
+};
 const searchKeyDown = ({ key }) => {
   if (key === "ArrowDown") {
     searchIndex.value = Math.min(
@@ -71,25 +132,75 @@ const searchKeyDown = ({ key }) => {
       Math.max(-1, searchIndex.value - 1),
     );
   } else if (key === "Enter") {
-    searchActiveItem.value?.click();
+    if (searchActiveItem.value) {
+      searchActiveItem.value?.click();
+    } else {
+      arrive();
+    }
   }
 };
+const searchIconRender = ({ option }) =>
+  h(
+    "div",
+    h(
+      NButton,
+      {
+        secondary: true,
+        circle: true,
+        class: "rounded! m-1!",
+        onClick: () => {
+          settings.searchSource = option;
+          searchInputIns.value.focus();
+        },
+      },
+      {
+        icon: () =>
+          h(NIcon, {}, { default: () => h("img", { src: option.icon }) }),
+      },
+    ),
+  );
 watch(
-  () => searchActiveItem.value,
+  () => searchIndex.value,
   () => {
+    searchActiveItem.value = document.querySelector("a.searchActive");
     searchActiveItem.value?.scrollIntoView({
       block: "center",
     });
   },
+  {
+    flush: "post",
+  },
+);
+watch(
+  () => searchDialogVisible.value,
+  () => {
+    if (!settings.searchSource) {
+      settings.searchSource = getSearchSource.value.at(0);
+    }
+    if (searchDialogVisible.value) {
+      nextTick(() => {
+        searchInputIns.value.focus();
+      });
+    }
+  },
 );
 window.addEventListener("keydown", (e) => {
-  if (e.ctrlKey && e.key === "s" && settings.useSearchShortcutKey) {
-    searchDialogVisible.value = true;
-    nextTick(() => {
-      searchInputIns.value.focus();
-    });
+  if (e.ctrlKey && e.key === "s") {
     e.stopPropagation();
     e.preventDefault();
+  }
+});
+window.addEventListener("keyup", (e) => {
+  if (e.ctrlKey && e.code === "KeyS" && settings.useSearchShortcutKey) {
+    searchDialogVisible.value = true;
+    e.stopPropagation();
+    e.preventDefault();
+  } else if (e.code === "Escape" && searchActiveItem) {
+    searchIndex.value = -1;
+    e.stopPropagation();
+    e.preventDefault();
+  } else if (searchDialogVisible.value && !inputIsFocus.value) {
+    searchInputIns.value.focus();
   }
 });
 </script>
