@@ -31,7 +31,8 @@
           v-model:value="searchValue"
           ref="searchInputIns"
           :placeholder="getLangData('输入搜索地址或搜索内容')"
-          @keydown="searchKeyDown"
+          @keydown.stop="searchKeyDown"
+          clearable
           @fucus="() => (inputIsFocus = true)"
           @blur="() => (inputIsFocus = false)"
         ></NInput>
@@ -55,6 +56,12 @@
           :key="item"
           class="p-0! leading-12"
           :class="{ 'bg-teal-900': index === searchIndex }"
+          @click="
+            () => {
+              searchValue = '';
+              searchDialogVisible = false;
+            }
+          "
         >
           <a
             :href="item.url"
@@ -108,14 +115,20 @@ const searchResult = computed(() => {
   return list;
 });
 const arrive = () => {
-  if (!searchValueEmpty.value) {
+  if (searchValueIsUrl.value) {
+    let url = searchValue.value;
+    if (url.startsWith("//")) {
+      url = "https:" + url;
+    } else if (!/^https?:\/\//i.test(url)) {
+      url = "https://" + url;
+    }
+    window.open(url, settings.aElementTarget);
+  } else {
     window.open(
-      searchValueIsUrl.value
-        ? searchValue.value
-        : settings.searchSource.url.replace(
-            "{{data}}",
-            searchValue.value.replaceAll(" ", "+"),
-          ),
+      settings.searchSource.url.replace(
+        "{{data}}",
+        searchValue.value.replaceAll(" ", "+"),
+      ),
       settings.aElementTarget,
     );
   }
@@ -134,9 +147,13 @@ const searchKeyDown = ({ key }) => {
   } else if (key === "Enter") {
     if (searchActiveItem.value) {
       searchActiveItem.value?.click();
-    } else {
+    } else if (!searchValueEmpty.value) {
       arrive();
+    } else {
+      return;
     }
+    searchValue.value = "";
+    searchDialogVisible.value = false;
   }
 };
 const searchIconRender = ({ option }) =>
@@ -174,10 +191,10 @@ watch(
 watch(
   () => searchDialogVisible.value,
   () => {
-    if (!settings.searchSource) {
-      settings.searchSource = getSearchSource.value.at(0);
-    }
     if (searchDialogVisible.value) {
+      if (!settings.searchSource) {
+        settings.searchSource = getSearchSource.value.at(0);
+      }
       nextTick(() => {
         searchInputIns.value.focus();
       });

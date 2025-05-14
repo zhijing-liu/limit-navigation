@@ -29,6 +29,7 @@
             type="primary"
             @click="() => (searchDialogVisible = true)"
             class="flex-[1_0_160px] rounded!"
+            tag="div"
           >
             <template #icon>
               <SearchOutlined />
