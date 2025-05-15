@@ -68,6 +68,7 @@
             :target="settings.aElementTarget"
             class="w-full h-full inline-block px-2 hover:bg-gray-700 rounded"
             :class="{ searchActive: index === searchIndex }"
+            @click="() => (counter[unit.url] = (counter[unit.url] ?? 0) + 1)"
             >{{ item.label }} - [ {{ item.des }} ]
           </a>
         </NListItem>
@@ -77,6 +78,7 @@
 </template>
 <script setup>
 import {
+  counter,
   getNavList,
   getSearchSource,
   searchDialogVisible,

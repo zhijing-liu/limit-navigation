@@ -82,6 +82,7 @@ import {
   settings,
   settingDialogVisible,
   searchDialogVisible,
+  counter,
 } from "../stores.js";
 import { computed, defineAsyncComponent, h, hydrateOnIdle, watch } from "vue";
 import { NIcon, NImage } from "naive-ui";
@@ -112,7 +113,17 @@ const renderIcon = ({ iconURL, url }) =>
 
 const renderLabel = ({ url, label }) => {
   if (url) {
-    return h("a", { href: url, target: settings.aElementTarget }, label);
+    return h(
+      "a",
+      {
+        href: url,
+        target: settings.aElementTarget,
+        onClick: () => {
+          counter.value[url] = (counter.value[url] ?? 0) + 1;
+        },
+      },
+      label,
+    );
   } else {
     return label;
   }

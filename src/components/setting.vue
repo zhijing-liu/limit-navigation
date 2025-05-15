@@ -81,6 +81,18 @@
               <NSwitch v-model:value="settings.useSearchShortcutKey"></NSwitch>
             </NFlex>
           </NListItem>
+          <NListItem>
+            <NFlex justify="space-between">
+              <span class="flex-1"
+                >{{ getLangData("热门地址展示数量") }} :</span
+              >
+              <NInputNumber
+                v-model:value="settings.recommendCount"
+                :min="0"
+                :max="Object.keys(getUrlMap).length"
+              ></NInputNumber>
+            </NFlex>
+          </NListItem>
         </NList>
       </NCard>
       <NCard
@@ -130,7 +142,7 @@
 <script setup>
 import { toRaw } from "vue";
 import { UploadFileFilled } from "@vicons/material";
-import { settings, settingDialogVisible } from "../stores.js";
+import { settings, settingDialogVisible, getUrlMap } from "../stores.js";
 import { getLangData, settingOptions } from "../lang";
 
 const inputConfig = async () => {

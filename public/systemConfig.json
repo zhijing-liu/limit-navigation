@@ -81,6 +81,12 @@
           "url": "https://mail.163.com",
           "iconURL": "",
           "des": "163 网易邮箱"
+        },
+        {
+          "label": "Gmail",
+          "url": "https://mail.google.com",
+          "iconURL": "",
+          "des": "谷歌邮箱"
         }
       ]
     },
@@ -110,7 +116,13 @@
           "label": "Naive UI",
           "url": "https://www.naiveui.com",
           "iconURL": "https://www.naiveui.com/assets/naivelogo-BdDVTUmz.svg",
-          "des": "Naive UI Vue3 框架"
+          "des": "Naive UI Vue3 UI框架"
+        },
+        {
+          "label": "Vexip UI",
+          "url": "https://www.vexipui.com",
+          "iconURL": "",
+          "des": "Vexip UI Vue3 UI框架"
         },
         {
           "label": "xicons",
@@ -135,6 +147,12 @@
           "url": "https://echarts.apache.org",
           "iconURL": "",
           "des": "echarts js图表库"
+        },
+        {
+          "label": "pictogrammers",
+          "url": "https://pictogrammers.com",
+          "iconURL": "",
+          "des": "pictogrammers 矢量图标库"
         }
       ]
     },
@@ -181,7 +199,7 @@
       ]
     },
     {
-      "label": "frp",
+      "label": "frp服务商",
       "des": "",
       "data": [
         {
