@@ -31,19 +31,28 @@
           <NListItem>
             <NFlex justify="space-between">
               <span class="flex-1">{{ getLangData("深色模式") }} :</span>
-              <NSwitch v-model:value="settings.darkTheme"></NSwitch>
+              <NSwitch
+                v-model:value="settings.darkTheme"
+                size="small"
+              ></NSwitch>
             </NFlex>
           </NListItem>
           <NListItem>
             <NFlex justify="space-between">
               <span class="flex-1">{{ getLangData("默认展开菜单") }} :</span>
-              <NSwitch v-model:value="settings.menuDefaultExpandAll"></NSwitch>
+              <NSwitch
+                v-model:value="settings.menuDefaultExpandAll"
+                size="small"
+              ></NSwitch>
             </NFlex>
           </NListItem>
           <NListItem>
             <NFlex justify="space-between">
               <span class="flex-1">{{ getLangData("列表滚动吸附") }} :</span>
-              <NSwitch v-model:value="settings.listScrollAdsorption"></NSwitch>
+              <NSwitch
+                v-model:value="settings.listScrollAdsorption"
+                size="small"
+              ></NSwitch>
             </NFlex>
           </NListItem>
           <NListItem>
@@ -78,7 +87,10 @@
               <span class="flex-1"
                 >{{ getLangData("是否启用搜索快捷键") }} :</span
               >
-              <NSwitch v-model:value="settings.useSearchShortcutKey"></NSwitch>
+              <NSwitch
+                v-model:value="settings.useSearchShortcutKey"
+                size="small"
+              ></NSwitch>
             </NFlex>
           </NListItem>
           <NListItem>
@@ -87,9 +99,12 @@
                 >{{ getLangData("热门地址展示数量") }} :</span
               >
               <NInputNumber
+                size="small"
+                class="w-[100px] text-center"
                 v-model:value="settings.recommendCount"
                 :min="0"
                 :max="Object.keys(getUrlMap).length"
+                buttonPlacement="both"
               ></NInputNumber>
             </NFlex>
           </NListItem>
