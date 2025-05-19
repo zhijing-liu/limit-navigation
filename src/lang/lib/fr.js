@@ -30,4 +30,5 @@ export const dataList = {
   热门地址展示数量: "Hot adresse affichage quantité",
   主题: "Le thème",
   主题色: "Thème couleur couleur",
+  计数器已重置: "Le compteur a été réinitialisé",
 };

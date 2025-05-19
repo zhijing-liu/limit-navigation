@@ -30,4 +30,5 @@ export const dataList = {
   热门地址展示数量: "Hot adressen geben die anzahl an",
   主题: "Ein motto?",
   主题色: "motiv?",
+  计数器已重置: "Das zähler ist zurückgesetzt",
 };

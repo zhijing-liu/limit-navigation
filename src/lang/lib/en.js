@@ -29,4 +29,5 @@ export const dataList = {
   热门地址展示数量: "The number of popular address displays",
   主题: "theme",
   主题色: "Theme color",
+  计数器已重置: "The counter has been reset.",
 };

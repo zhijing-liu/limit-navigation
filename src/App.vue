@@ -4,20 +4,22 @@
     class="w-full"
     :themeOverrides="themeOverrides"
   >
-    <NGlobalStyle />
-    <NSpin
-      :show="loading"
-      contentClass="w-full h-full"
-      class="h-full w-full"
-      :delay="300"
-      size="small"
-    >
-      <NLayout hasSider class="h-full" v-if="!loading">
-        <Directory />
-        <Container />
-      </NLayout>
-    </NSpin>
-    <Setting />
+    <NMessageProvider>
+      <NGlobalStyle />
+      <NSpin
+        :show="loading"
+        contentClass="w-full h-full"
+        class="h-full w-full"
+        :delay="300"
+        size="small"
+      >
+        <NLayout hasSider class="h-full" v-if="!loading">
+          <Directory />
+          <Container />
+        </NLayout>
+      </NSpin>
+      <Setting />
+    </NMessageProvider>
   </NConfigProvider>
 </template>
 <script setup>

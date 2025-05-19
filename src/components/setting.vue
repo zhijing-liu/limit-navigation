@@ -99,7 +99,6 @@
                 :max="Object.keys(getUrlMap).length"
                 buttonPlacement="both"
               ></NInputNumber>
-
               <NButton
                 size="small"
                 type="warning"
@@ -107,6 +106,12 @@
                 strong
                 secondary
                 class="rounded!"
+                @click="
+                  () => {
+                    counter = {};
+                    message.success(getLangData('计数器已重置'));
+                  }
+                "
               >
                 <template #icon>
                   <RefreshFilled />
@@ -212,9 +217,12 @@ import {
   settingDialogVisible,
   getUrlMap,
   themePrimaryColors,
+  counter,
 } from "../stores.js";
 import { getLangData, settingOptions } from "../lang";
 import { hexToRgba } from "../utils.js";
+import { useMessage } from "naive-ui";
+const message = useMessage();
 const inputConfig = async () => {
   const input = document.createElement("input");
   input.type = "file";
