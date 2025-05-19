@@ -26,4 +26,8 @@ export const dataList = {
   选择语言: "Wählen sie die sprache.",
   输入搜索地址或搜索内容:
     "Geben sie eine suchadresse Oder suchen sie nach inhalt ein",
+  偏好: "vorlieben.",
+  热门地址展示数量: "Hot adressen geben die anzahl an",
+  主题: "Ein motto?",
+  主题色: "motiv?",
 };

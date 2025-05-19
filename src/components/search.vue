@@ -2,12 +2,12 @@
   <NModal
     v-model:show="searchDialogVisible"
     preset="dialog"
-    type="success"
     :title="getLangData('搜索')"
     class="w-[600px]!"
     :closeOnEsc="!searchActiveItem"
+    :showIcon="false"
   >
-    <NFlex vertical class="overflow-hidden h-[40vh] py-2">
+    <NFlex vertical class="overflow-hidden h-[60vh] py-2">
       <NInputGroup>
         <NDropdown
           v-if="settings.searchSource"
@@ -17,9 +17,9 @@
           :renderOption="searchIconRender"
           :showArrow="false"
           :showCheckmark="false"
-          trigger="hover"
+          trigger="click"
         >
-          <NButton secondary circle class="rounded!">
+          <NButton type="primary" circle class="rounded!">
             <template #icon>
               <NIcon>
                 <img :src="settings.searchSource.icon" alt="" />
@@ -31,17 +31,12 @@
           v-model:value="searchValue"
           ref="searchInputIns"
           :placeholder="getLangData('输入搜索地址或搜索内容')"
-          @keydown.stop="searchKeyDown"
+          @keydown="searchKeyDown"
           clearable
           @fucus="() => (inputIsFocus = true)"
           @blur="() => (inputIsFocus = false)"
         ></NInput>
-        <NButton
-          secondary
-          @click="arrive"
-          :disabled="searchValueEmpty"
-          type="primary"
-        >
+        <NButton @click="arrive" :disabled="searchValueEmpty" type="primary">
           <template #icon>
             <NIcon>
               <ArrowForwardFilled v-if="searchValueIsUrl" />
@@ -68,7 +63,7 @@
             :target="settings.aElementTarget"
             class="w-full h-full inline-block px-2 hover:bg-gray-700 rounded"
             :class="{ searchActive: index === searchIndex }"
-            @click="() => (counter[unit.url] = (counter[unit.url] ?? 0) + 1)"
+            @click="() => (counter[item.url] = (counter[item.url] ?? 0) + 1)"
             >{{ item.label }} - [ {{ item.des }} ]
           </a>
         </NListItem>
@@ -164,9 +159,9 @@ const searchIconRender = ({ option }) =>
     h(
       NButton,
       {
-        secondary: true,
         circle: true,
-        class: "rounded! m-1!",
+        class: "rounded! m-1! border-0!",
+        type: settings.searchSource.url === option.url ? "primary" : "default",
         onClick: () => {
           settings.searchSource = option;
           searchInputIns.value.focus();
@@ -214,7 +209,7 @@ window.addEventListener("keyup", (e) => {
     searchDialogVisible.value = true;
     e.stopPropagation();
     e.preventDefault();
-  } else if (e.code === "Escape" && searchActiveItem) {
+  } else if (e.code === "Escape" && searchActiveItem.value) {
     searchIndex.value = -1;
     e.stopPropagation();
     e.preventDefault();

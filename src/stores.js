@@ -31,6 +31,18 @@ watch(
   },
   { deep: true },
 );
+export const themePrimaryColors = reactive([
+  "#FF5722",
+  "#FF6F61",
+  "#FF9800",
+  "#FFC107",
+  "#66BB6A",
+  "#4CAF50",
+  "#009688",
+  "#008CBA",
+  "#9C27B0",
+  "#607D8B",
+]);
 // 设置
 export const settings = reactive({
   darkTheme: true,
@@ -43,6 +55,7 @@ export const settings = reactive({
   lang: "zh-CHS",
   searchSource: "",
   recommendCount: 4,
+  primaryColor: "#009688",
   ...JSON.parse(localStorage.getItem("settings") ?? "{}"),
 });
 watch(

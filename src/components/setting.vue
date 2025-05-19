@@ -6,8 +6,10 @@
     :title="getLangData('设置')"
     class="w-[550px]!"
     :positiveText="getLangData('完成')"
+    :positiveButtonProps="{ type: 'primary' }"
     :closeOnEsc="false"
     :maskClosable="false"
+    :showIcon="false"
   >
     <template #close>
       <NFlex>
@@ -19,24 +21,15 @@
         }}</NButton>
       </NFlex>
     </template>
-    <NFlex class="h-[40vh] overflow-auto" vertical>
+    <NFlex class="h-[60vh] overflow-auto" vertical>
       <NCard
-        :title="`${getLangData('样式与喜好')} :`"
+        :title="`${getLangData('偏好')} :`"
         :bordered="false"
         size="small"
         headerClass="px-2!"
         contentClass="pb-0!"
       >
         <NList size="small">
-          <NListItem>
-            <NFlex justify="space-between">
-              <span class="flex-1">{{ getLangData("深色模式") }} :</span>
-              <NSwitch
-                v-model:value="settings.darkTheme"
-                size="small"
-              ></NSwitch>
-            </NFlex>
-          </NListItem>
           <NListItem>
             <NFlex justify="space-between">
               <span class="flex-1">{{ getLangData("默认展开菜单") }} :</span>
@@ -94,7 +87,7 @@
             </NFlex>
           </NListItem>
           <NListItem>
-            <NFlex justify="space-between">
+            <NFlex justify="space-between" class="gap-1!">
               <span class="flex-1"
                 >{{ getLangData("热门地址展示数量") }} :</span
               >
@@ -106,6 +99,58 @@
                 :max="Object.keys(getUrlMap).length"
                 buttonPlacement="both"
               ></NInputNumber>
+
+              <NButton
+                size="small"
+                type="warning"
+                circle
+                strong
+                secondary
+                class="rounded!"
+              >
+                <template #icon>
+                  <RefreshFilled />
+                </template>
+              </NButton>
+            </NFlex>
+          </NListItem>
+        </NList>
+      </NCard>
+      <NCard
+        :title="`${getLangData('主题')} :`"
+        :bordered="false"
+        size="small"
+        headerClass="px-2!"
+        contentClass="pb-0!"
+      >
+        <NList size="small">
+          <NListItem>
+            <NFlex justify="space-between">
+              <span class="flex-1">{{ getLangData("深色模式") }} :</span>
+              <NSwitch
+                v-model:value="settings.darkTheme"
+                size="small"
+              ></NSwitch>
+            </NFlex>
+          </NListItem>
+          <NListItem>
+            <NFlex justify="space-between">
+              <span class="flex-1">{{ getLangData("主题色") }} :</span>
+              <NFlex class="flex-[0_0_190px] gap-3!" justify="center">
+                <div
+                  class="w-[28px] h-[28px] rounded cursor-pointer hover:scale-[1.3] duration-300 border-2 border-green-50"
+                  v-for="color in themePrimaryColors"
+                  :style="`background-color:${color};border-color:${hexToRgba(color, 0.3).value};`"
+                  @click="() => (settings.primaryColor = color)"
+                  :class="{ 'border-white!': settings.primaryColor === color }"
+                ></div>
+                <NColorPicker
+                  v-model:value="settings.primaryColor"
+                  :modes="['hex']"
+                  size="small"
+                  :showAlpha="false"
+                />
+              </NFlex>
             </NFlex>
           </NListItem>
         </NList>
@@ -121,11 +166,12 @@
           <NListItem>
             <NFlex justify="space-between" align="center">
               <span class="flex-1">{{ getLangData("外部配置项地址") }} :</span>
-              <NFlex class="flex-1 flex-nowrap!" justify="flex-end">
+              <NFlex class="flex-1 flex-nowrap! gap-1!" justify="flex-end">
                 <NInput
                   v-model:value="settings.externalDataUrl"
                   class="flex-[0_0_200px]"
                   :placeholder="`${getLangData('接口地址')} , ${getLangData('只支持GET请求')}`"
+                  size="small"
                 >
                 </NInput>
                 <NButton
@@ -133,8 +179,9 @@
                   circle
                   strong
                   secondary
-                  type="tertiary"
+                  type="primary"
                   class="rounded!"
+                  size="small"
                 >
                   <template #icon>
                     <UploadFileFilled />
@@ -146,7 +193,10 @@
           <NListItem>
             <NFlex justify="space-between">
               <span class="flex-1">{{ getLangData("加载默认设置") }} :</span>
-              <NSwitch v-model:value="settings.loadDefaultConfig"></NSwitch>
+              <NSwitch
+                v-model:value="settings.loadDefaultConfig"
+                size="small"
+              />
             </NFlex>
           </NListItem>
         </NList>
@@ -156,10 +206,15 @@
 </template>
 <script setup>
 import { toRaw } from "vue";
-import { UploadFileFilled } from "@vicons/material";
-import { settings, settingDialogVisible, getUrlMap } from "../stores.js";
+import { UploadFileFilled, RefreshFilled } from "@vicons/material";
+import {
+  settings,
+  settingDialogVisible,
+  getUrlMap,
+  themePrimaryColors,
+} from "../stores.js";
 import { getLangData, settingOptions } from "../lang";
-
+import { hexToRgba } from "../utils.js";
 const inputConfig = async () => {
   const input = document.createElement("input");
   input.type = "file";

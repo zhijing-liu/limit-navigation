@@ -2,6 +2,7 @@
   <NConfigProvider
     :theme="settings.darkTheme ? darkTheme : lightTheme"
     class="w-full"
+    :themeOverrides="themeOverrides"
   >
     <NGlobalStyle />
     <NSpin
@@ -24,7 +25,19 @@ import { darkTheme, lightTheme } from "naive-ui";
 import Directory from "./components/directory.vue";
 import Container from "./components/container.vue";
 import { systemConfig, settings } from "./stores.js";
-import { watch, ref, defineAsyncComponent, hydrateOnIdle } from "vue";
+import { watch, ref, defineAsyncComponent, hydrateOnIdle, computed } from "vue";
+import { hexToHsla } from "./utils.js";
+const themeOverrides = computed(() => {
+  const { h, s, l } = hexToHsla(settings.primaryColor);
+  return {
+    common: {
+      primaryColor: settings.primaryColor,
+      primaryColorHover: `hsl(${h},${s}%,${Math.max(l, l + 10)}%)`,
+      primaryColorPressed: `hsl(${h},${s}%,${Math.min(l, l - 5)}%)`,
+      primaryColorSuppl: `hsl(${h},${s}%,${Math.max(l, l + 20)}%)`,
+    },
+  };
+});
 const Setting = defineAsyncComponent({
   loader: () => import("./components/setting.vue"),
   hydrate: hydrateOnIdle(),

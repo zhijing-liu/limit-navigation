@@ -25,7 +25,6 @@
             </template>
           </NButton>
           <NButton
-            secondary
             type="primary"
             @click="() => (searchDialogVisible = true)"
             class="flex-[1_0_160px] rounded!"

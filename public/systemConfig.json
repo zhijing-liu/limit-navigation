@@ -273,6 +273,12 @@
           "url": "https://www.yyczxt.com",
           "iconURL": "",
           "des": "又要重装 系统镜像下载站"
+        },
+        {
+          "label": "zFrontier Lab",
+          "url": "https://www.zfrontier.com/lab/keyboardTester",
+          "iconURL": "https://www.zfrontier.com/favicon.ico",
+          "des": "zFrontier Lab 在线键盘测试"
         }
       ]
     }
