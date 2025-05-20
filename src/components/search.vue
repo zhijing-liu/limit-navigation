@@ -76,6 +76,7 @@ import {
   counter,
   getNavList,
   getSearchSource,
+  getUrlMap,
   searchDialogVisible,
   settings,
 } from "../stores.js";
@@ -83,9 +84,11 @@ import { ArrowForwardFilled, SearchFilled } from "@vicons/material";
 import { getLangData } from "../lang";
 import { computed, h, watch } from "vue";
 import { NButton, NIcon } from "naive-ui";
+import Fuse from "fuse.js";
 
 const searchValue = ref("");
-const searchValueEmpty = computed(() => searchValue.value.trim().length === 0);
+const searchValueTrim = computed(() => searchValue.value.trim());
+const searchValueEmpty = computed(() => searchValueTrim.value.length === 0);
 const searchInputIns = ref();
 const searchIndex = ref(-1);
 const searchActiveItem = ref(null);
@@ -93,24 +96,33 @@ const inputIsFocus = ref(false);
 
 const urlReg =
   /^(?:(http|https|ftp):\/\/)?((?:[\w-]+\.)+[a-z0-9]+)((?:\/[^/?#]*)+)?(\?[^#]+)?(#.+)?$/i;
-const searchValueIsUrl = computed(() => urlReg.test(searchValue.value.trim()));
-const childrenItemsText = computed(() =>
-  getNavList.value
-    .map((item) => item.data)
-    .flat()
-    .map((item) => JSON.stringify(item)),
+const searchValueIsUrl = computed(() => urlReg.test(searchValueTrim.value));
+
+const fuse = computed(
+  () =>
+    new Fuse(Object.values(getUrlMap.value), {
+      threshold: settings.searchThreshold,
+      ignoreLocation: true,
+      keys: ["des", "url", "label"],
+    }),
 );
-const searchResult = computed(() => {
-  const reg = new RegExp(`${searchValue.value.trim()}`, "g");
-  const list = childrenItemsText.value
-    .filter((item) => reg.test(item))
-    .map((item) => JSON.parse(item));
-  searchIndex.value = Math.min(
-    list.length - 1,
-    Math.max(-1, searchIndex.value),
-  );
-  return list;
-});
+const searchResult = computed(() =>
+  searchValueTrim.value.length > 0
+    ? fuse.value.search(searchValueTrim.value).map(({ item }) => item)
+    : Object.values(getUrlMap.value),
+);
+watch(
+  () => searchResult.value,
+  () => {
+    searchIndex.value = Math.min(
+      searchResult.value.length - 1,
+      Math.max(-1, searchIndex.value),
+    );
+  },
+  {
+    deep: true,
+  },
+);
 const arrive = () => {
   if (searchValueIsUrl.value) {
     let url = searchValue.value;
@@ -130,18 +142,18 @@ const arrive = () => {
     );
   }
 };
-const searchKeyDown = ({ key }) => {
-  if (key === "ArrowDown") {
+const searchKeyDown = ({ key, code }) => {
+  if (code === "ArrowDown") {
     searchIndex.value = Math.min(
       searchResult.value.length - 1,
       Math.max(-1, searchIndex.value + 1),
     );
-  } else if (key === "ArrowUp") {
+  } else if (code === "ArrowUp") {
     searchIndex.value = Math.min(
       searchResult.value.length - 1,
       Math.max(-1, searchIndex.value - 1),
     );
-  } else if (key === "Enter") {
+  } else if (code === "Enter") {
     if (searchActiveItem.value) {
       searchActiveItem.value?.click();
     } else if (!searchValueEmpty.value) {
@@ -151,6 +163,17 @@ const searchKeyDown = ({ key }) => {
     }
     searchValue.value = "";
     searchDialogVisible.value = false;
+  } else if (code === "PageUp" || code === "PageDown") {
+    const index = getSearchSource.value.findIndex(
+      ({ url }) => url === settings.searchSource.url,
+    );
+    if (code === "PageUp") {
+      settings.searchSource = getSearchSource.value.at(Math.max(0, index - 1));
+    } else if (code === "PageDown") {
+      settings.searchSource = getSearchSource.value.at(
+        Math.min(getSearchSource.value.length - 1, index + 1),
+      );
+    }
   }
 };
 const searchIconRender = ({ option }) =>

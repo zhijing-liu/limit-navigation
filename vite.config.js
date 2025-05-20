@@ -4,7 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
-import { viteSingleFile } from "vite-plugin-singlefile";
+// import { viteSingleFile } from "vite-plugin-singlefile";
+import { visualizer } from "rollup-plugin-visualizer";
 export default defineConfig({
   plugins: [
     tailwindcss(),
@@ -29,6 +30,10 @@ export default defineConfig({
     //     ...viteSingleFile(),
     //     apply: 'build'
     // }
+    {
+      ...visualizer(),
+      apply: "build",
+    },
   ],
   server: {
     proxy: {

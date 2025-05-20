@@ -30,4 +30,8 @@ export const dataList = {
   主题: "theme",
   主题色: "Theme color",
   计数器已重置: "The counter has been reset.",
+  数据源配置: "Data source configuration",
+  模糊搜索宽容度: "Fuzzy search tolerance",
+  严格: "strict",
+  宽容: "tolerance",
 };

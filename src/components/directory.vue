@@ -83,7 +83,7 @@ import {
   searchDialogVisible,
   counter,
 } from "../stores.js";
-import { computed, defineAsyncComponent, h, hydrateOnIdle, watch } from "vue";
+import { defineAsyncComponent, h, hydrateOnIdle } from "vue";
 import { NIcon, NImage } from "naive-ui";
 import iconImage from "../assets/icon.png";
 import {

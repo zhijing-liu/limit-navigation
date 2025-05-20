@@ -76,17 +76,6 @@
             </NFlex>
           </NListItem>
           <NListItem>
-            <NFlex justify="space-between">
-              <span class="flex-1"
-                >{{ getLangData("是否启用搜索快捷键") }} :</span
-              >
-              <NSwitch
-                v-model:value="settings.useSearchShortcutKey"
-                size="small"
-              ></NSwitch>
-            </NFlex>
-          </NListItem>
-          <NListItem>
             <NFlex justify="space-between" class="gap-1!">
               <span class="flex-1"
                 >{{ getLangData("热门地址展示数量") }} :</span
@@ -161,7 +150,7 @@
         </NList>
       </NCard>
       <NCard
-        :title="`${getLangData('配置')} :`"
+        :title="`${getLangData('数据源配置')} :`"
         :bordered="false"
         size="small"
         headerClass="px-2!"
@@ -202,6 +191,62 @@
                 v-model:value="settings.loadDefaultConfig"
                 size="small"
               />
+            </NFlex>
+          </NListItem>
+        </NList>
+      </NCard>
+      <NCard
+        :title="`${getLangData('搜索')} :`"
+        :bordered="false"
+        size="small"
+        headerClass="px-2!"
+        contentClass="pb-0!"
+      >
+        <NList size="small">
+          <NListItem>
+            <NFlex justify="space-between">
+              <span class="flex-1"
+                >{{ getLangData("是否启用搜索快捷键") }} :</span
+              >
+              <NSwitch
+                v-model:value="settings.useSearchShortcutKey"
+                size="small"
+              ></NSwitch>
+            </NFlex>
+          </NListItem>
+          <NListItem>
+            <NFlex justify="space-between" class="gap-1!">
+              <span class="flex-1"
+                >{{ getLangData("模糊搜索宽容度") }} - [0(
+                {{ getLangData("严格") }} ) - 1( {{ getLangData("宽容") }} )]
+                :</span
+              >
+              <NInputNumber
+                size="small"
+                class="w-[100px] text-center"
+                v-model:value="settings.searchThreshold"
+                :min="0"
+                :max="1"
+                :step="0.1"
+                buttonPlacement="both"
+              ></NInputNumber>
+              <NButton
+                size="small"
+                type="warning"
+                circle
+                strong
+                secondary
+                class="rounded!"
+                @click="
+                  () => {
+                    settings.searchThreshold = 0.1;
+                  }
+                "
+              >
+                <template #icon>
+                  <RefreshFilled />
+                </template>
+              </NButton>
             </NFlex>
           </NListItem>
         </NList>

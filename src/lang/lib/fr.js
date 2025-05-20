@@ -31,4 +31,8 @@ export const dataList = {
   主题: "Le thème",
   主题色: "Thème couleur couleur",
   计数器已重置: "Le compteur a été réinitialisé",
+  数据源配置: "Configuration des sources de données",
+  模糊搜索宽容度: "Tolérance de recherche floue",
+  严格: "strictement",
+  宽容: "La tolérance",
 };

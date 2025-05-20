@@ -31,4 +31,8 @@ export const dataList = {
   主题: "Ein motto?",
   主题色: "motiv?",
   计数器已重置: "Das zähler ist zurückgesetzt",
+  数据源配置: "Daten zu den quellen.",
+  模糊搜索宽容度: "Suche suche suche suche suche erfolglos",
+  严格: "strengen.",
+  宽容: "toleranz.",
 };

@@ -51,11 +51,12 @@ export const settings = reactive({
   loadDefaultConfig: true,
   listScrollAdsorption: true,
   aElementTarget: "_blank",
-  useSearchShortcutKey: true,
   lang: "zh-CHS",
   searchSource: "",
   recommendCount: 4,
   primaryColor: "#009688",
+  useSearchShortcutKey: true,
+  searchThreshold: 0.1,
   ...JSON.parse(localStorage.getItem("settings") ?? "{}"),
 });
 watch(
