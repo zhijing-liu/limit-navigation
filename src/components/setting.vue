@@ -267,6 +267,7 @@ import {
 import { getLangData, settingOptions } from "../lang";
 import { hexToRgba } from "../utils.js";
 import { useMessage } from "naive-ui";
+
 const message = useMessage();
 const inputConfig = async () => {
   const input = document.createElement("input");

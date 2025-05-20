@@ -5,7 +5,7 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
 // import { viteSingleFile } from "vite-plugin-singlefile";
-import { visualizer } from "rollup-plugin-visualizer";
+// import { visualizer } from "rollup-plugin-visualizer";
 export default defineConfig({
   plugins: [
     tailwindcss(),
@@ -30,10 +30,10 @@ export default defineConfig({
     //     ...viteSingleFile(),
     //     apply: 'build'
     // }
-    {
-      ...visualizer(),
-      apply: "build",
-    },
+    // {
+    //   ...visualizer(),
+    //   apply: "build",
+    // },
   ],
   server: {
     proxy: {
@@ -41,7 +41,9 @@ export default defineConfig({
     },
   },
   build: {
-    target: "esnext",
-    minify: "esbuild",
+    // target: "esnext",
+    // minify: "esbuild",
+    assetsInlineLimit: 0,
+    manifest: true,
   },
 });

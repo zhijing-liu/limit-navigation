@@ -4,14 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build&Upload": "node scripts/build-push/index.js",
-    "updateSystemConfig": "node scripts/build-push/updateSystemConfig.js",
-    "lang": "bun scripts/translate/tool/index.js path=src/lang",
+    "dev": "bunx --bun vite",
+    "build": "bunx --bun vite build",
+    "reduce": "bun ./scripts/reduceSystemConfig/index.js",
+    "build&Upload": "bun ./scripts/build-push/index.js",
+    "updateSystemConfig": "bun ./scripts/build-push/updateSystemConfig.js",
+    "lang": "bun ./scripts/translate/tool/index.js path=src/lang",
     "auto lang": "bun scripts/translate/index.js"
   },
   "dependencies": {
+    "bun": "^1.2.13",
     "fuse.js": "^7.1.0",
     "vue": "^3.5.13"
   },
