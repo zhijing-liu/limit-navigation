@@ -32,6 +32,7 @@
           ref="searchInputIns"
           :placeholder="getLangData('输入搜索地址或搜索内容')"
           @keydown="searchKeyDown"
+          @change="inputChange"
           clearable
           @fucus="() => (inputIsFocus = true)"
           @blur="() => (inputIsFocus = false)"
@@ -142,6 +143,17 @@ const arrive = () => {
     );
   }
 };
+const inputChange = () => {
+  if (searchActiveItem.value) {
+    searchActiveItem.value?.click();
+  } else if (!searchValueEmpty.value) {
+    arrive();
+  } else {
+    return;
+  }
+  searchValue.value = "";
+  searchDialogVisible.value = false;
+};
 const searchKeyDown = ({ key, code }) => {
   if (code === "ArrowDown") {
     searchIndex.value = Math.min(
@@ -153,16 +165,6 @@ const searchKeyDown = ({ key, code }) => {
       searchResult.value.length - 1,
       Math.max(-1, searchIndex.value - 1),
     );
-  } else if (code === "Enter") {
-    if (searchActiveItem.value) {
-      searchActiveItem.value?.click();
-    } else if (!searchValueEmpty.value) {
-      arrive();
-    } else {
-      return;
-    }
-    searchValue.value = "";
-    searchDialogVisible.value = false;
   } else if (code === "PageUp" || code === "PageDown") {
     const index = getSearchSource.value.findIndex(
       ({ url }) => url === settings.searchSource.url,
