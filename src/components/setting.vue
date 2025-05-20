@@ -13,22 +13,24 @@
   >
     <template #close>
       <NFlex>
-        <NButton secondary size="small" @click="outputConfig" type="tertiary">{{
+        <NButton size="small" @click="outputConfig">{{
           getLangData("导出")
         }}</NButton>
-        <NButton secondary size="small" @click="inputConfig" type="primary">{{
+        <NButton size="small" @click="inputConfig" type="primary">{{
           getLangData("导入")
         }}</NButton>
       </NFlex>
     </template>
     <NFlex class="h-[60vh] overflow-auto" vertical>
-      <NCard
-        :title="`${getLangData('偏好')} :`"
-        :bordered="false"
-        size="small"
-        headerClass="px-2!"
-        contentClass="pb-0!"
-      >
+      <NCard size="small" headerClass="px-2!" contentClass="pb-0!">
+        <template #header>
+          <NFlex align="center" class="gap-1!">
+            <NIcon>
+              <StyleSharp />
+            </NIcon>
+            <span>{{ getLangData("偏好") }} :</span>
+          </NFlex>
+        </template>
         <NList size="small">
           <NListItem>
             <NFlex justify="space-between">
@@ -110,13 +112,15 @@
           </NListItem>
         </NList>
       </NCard>
-      <NCard
-        :title="`${getLangData('主题')} :`"
-        :bordered="false"
-        size="small"
-        headerClass="px-2!"
-        contentClass="pb-0!"
-      >
+      <NCard size="small" headerClass="px-2!" contentClass="pb-0!">
+        <template #header>
+          <NFlex align="center" class="gap-1!">
+            <NIcon>
+              <ColorLensFilled />
+            </NIcon>
+            <span>{{ getLangData("主题") }} :</span>
+          </NFlex>
+        </template>
         <NList size="small">
           <NListItem>
             <NFlex justify="space-between">
@@ -149,13 +153,15 @@
           </NListItem>
         </NList>
       </NCard>
-      <NCard
-        :title="`${getLangData('数据源配置')} :`"
-        :bordered="false"
-        size="small"
-        headerClass="px-2!"
-        contentClass="pb-0!"
-      >
+      <NCard size="small" headerClass="px-2!" contentClass="pb-0!">
+        <template #header>
+          <NFlex align="center" class="gap-1!">
+            <NIcon>
+              <DataObjectFilled />
+            </NIcon>
+            <span>{{ getLangData("数据源配置") }} :</span>
+          </NFlex>
+        </template>
         <NList size="small">
           <NListItem>
             <NFlex justify="space-between" align="center">
@@ -195,13 +201,15 @@
           </NListItem>
         </NList>
       </NCard>
-      <NCard
-        :title="`${getLangData('搜索')} :`"
-        :bordered="false"
-        size="small"
-        headerClass="px-2!"
-        contentClass="pb-0!"
-      >
+      <NCard size="small" headerClass="px-2!" contentClass="pb-0!">
+        <template #header>
+          <NFlex align="center" class="gap-1!">
+            <NIcon>
+              <SearchOutlined />
+            </NIcon>
+            <span>{{ getLangData("搜索") }} :</span>
+          </NFlex>
+        </template>
         <NList size="small">
           <NListItem>
             <NFlex justify="space-between">
@@ -256,7 +264,14 @@
 </template>
 <script setup>
 import { toRaw } from "vue";
-import { UploadFileFilled, RefreshFilled } from "@vicons/material";
+import {
+  UploadFileFilled,
+  RefreshFilled,
+  StyleSharp,
+  DataObjectFilled,
+  ColorLensFilled,
+  SearchOutlined,
+} from "@vicons/material";
 import {
   settings,
   settingDialogVisible,
