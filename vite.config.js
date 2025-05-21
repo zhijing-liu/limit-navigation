@@ -45,5 +45,11 @@ export default defineConfig({
     // minify: "esbuild",
     assetsInlineLimit: 0,
     manifest: true,
+    rollupOptions: {
+      input: {
+        index: "index.html",
+        reduce: "reduce.html",
+      }
+    },
   },
 });

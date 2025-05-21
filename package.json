@@ -7,7 +7,8 @@
     "dev": "bunx --bun vite",
     "build": "bunx --bun vite build",
     "reduce": "bun ./scripts/reduceSystemConfig/index.js",
-    "build&Upload": "bun ./scripts/build-push/index.js",
+    "Upload": "bun ./scripts/build-push/index.js",
+    "UploadJY": "bun ./scripts/build-push/index.js server=JYWebHosting",
     "updateSystemConfig": "bun ./scripts/build-push/updateSystemConfig.js",
     "lang": "bun ./scripts/translate/tool/index.js path=src/lang",
     "auto lang": "bun scripts/translate/index.js"

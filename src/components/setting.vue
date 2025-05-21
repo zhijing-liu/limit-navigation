@@ -187,6 +187,20 @@
                     <UploadFileFilled />
                   </template>
                 </NButton>
+                <a href="/reduce.html" target="_blank">
+                  <NButton
+                    circle
+                    strong
+                    secondary
+                    type="primary"
+                    class="rounded!"
+                    size="small"
+                  >
+                    <template #icon>
+                      <EditNoteFilled />
+                    </template>
+                  </NButton>
+                </a>
               </NFlex>
             </NFlex>
           </NListItem>
@@ -271,6 +285,7 @@ import {
   DataObjectFilled,
   ColorLensFilled,
   SearchOutlined,
+  EditNoteFilled,
 } from "@vicons/material";
 import {
   settings,

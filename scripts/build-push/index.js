@@ -11,6 +11,7 @@ const server =
   Object.keys(serverMap)[0];
 const buildPathArg =
   argv.find((r) => r.includes("buildPath="))?.slice(10) ?? buildPath ?? "dist";
+const build = argv.includes("build");
 const path = isAbsolute(buildPathArg)
   ? buildPathArg
   : join(process.cwd(), buildPathArg);
@@ -35,14 +36,17 @@ const renamePath = (path) => {
   const newDirname = `${basename(path)}-bak-${t.getFullYear()}-${t.getMonth()}-${t.getDay()}-${t.getHours()}-${t.getMinutes()}-${t.getSeconds()}`;
   return join(dirname(config.path), newDirname).replaceAll("\\", "/");
 };
-try {
-  console.log("building");
-  execSync(`pnpm build --outDir ${path}`, { encoding: "utf8" });
-  console.log("Build end");
-} catch {
-  console.error(`Failed to build`);
-  process.exit(1);
+if (build) {
+  try {
+    console.log("building");
+    execSync(`pnpm build --outDir ${path}`, { encoding: "utf8" });
+    console.log("Build end");
+  } catch {
+    console.error(`Failed to build`);
+    process.exit(1);
+  }
 }
+
 try {
   accessSync(path);
 } catch (e) {

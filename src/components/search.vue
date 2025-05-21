@@ -50,8 +50,8 @@
         <NListItem
           v-for="(item, index) in searchResult"
           :key="item"
-          class="p-0! leading-12"
-          :class="{ 'bg-teal-900': index === searchIndex }"
+          class="p-0! leading-12 rounded"
+          :class="{ 'bg-teal-700/40': index === searchIndex }"
           @click="
             () => {
               searchValue = '';
@@ -62,7 +62,7 @@
           <a
             :href="item.url"
             :target="settings.aElementTarget"
-            class="w-full h-full inline-block px-2 hover:bg-gray-700 rounded"
+            class="w-full h-full inline-block px-2 hover:bg-gray-600/40 rounded"
             :class="{ searchActive: index === searchIndex }"
             @click="() => (counter[item.url] = (counter[item.url] ?? 0) + 1)"
             >{{ item.label }} - [ {{ item.des }} ]

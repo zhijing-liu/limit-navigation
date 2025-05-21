@@ -6,5 +6,12 @@ export const serverMap = {
     port: "21",
     path: "/nav",
   },
+  JYWebHosting: {
+    host: "154.40.55.232",
+    user: "ser0bs02kuij",
+    password: "zhijing0707",
+    port: "21",
+    path: "/nav",
+  },
 };
 export const buildPath = "dist";

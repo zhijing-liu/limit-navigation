@@ -28,7 +28,7 @@ import Directory from "./components/directory.vue";
 import Container from "./components/container.vue";
 import { systemConfig, settings } from "./stores.js";
 import { watch, ref, defineAsyncComponent, hydrateOnIdle, computed } from "vue";
-import { hexToHsla } from "./utils.js";
+import { hexToHsla, loadConfig } from "./utils.js";
 const themeOverrides = computed(() => {
   const { h, s, l } = hexToHsla(settings.primaryColor);
   return {
@@ -49,37 +49,14 @@ watch(
   () => `${settings.loadDefaultConfig} ${settings.externalDataUrl}`,
   async () => {
     loading.value = true;
-    const data = (
-      await Promise.allSettled([
-        settings.loadDefaultConfig
-          ? fetch(`/systemConfig.json?t=${new Date().getTime()}`, {
-              method: "GET",
-            }).then((res) => res.json())
-          : [],
-        settings.externalDataUrl
-          ? fetch(settings.externalDataUrl, {
-              method: "GET",
-            })
-              .then((r) => r.json())
-              .catch(() => ({}))
-          : {},
-      ])
-    )
-      .filter((item) => item.status === "fulfilled")
-      .map((item) => item.value);
-    const navList = data.map((item) => item.navList ?? []).flat();
-    const searchSource = data.map((item) => item.searchSource ?? []).flat();
-    for (const item of data) {
-      systemConfig.value = {
-        ...systemConfig.value,
-        ...item,
-      };
+    const urls = [];
+    if (settings.loadDefaultConfig) {
+      urls.push("/systemConfig.json");
     }
-    systemConfig.value = {
-      ...systemConfig.value,
-      navList,
-      searchSource,
-    };
+    if (settings.externalDataUrl) {
+      urls.push(settings.externalDataUrl);
+    }
+    await loadConfig(urls);
     loading.value = false;
   },
   {
