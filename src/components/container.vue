@@ -1,10 +1,22 @@
 <template>
   <NLayoutContent
     class="h-full"
+    contentClass="flex flex-col"
     :class="settings.darkTheme ? 'bg-neutral-800' : 'bg-neutral-50!'"
   >
+    <NFlex v-if="narrowScreen" class="p-3">
+      <NButton
+        circle
+        strong
+        secondary
+        class="rounded!"
+        @click="() => (collapsed = false)"
+      >
+        <template #icon> <MenuFilled /> </template>
+      </NButton>
+    </NFlex>
     <NList
-      class="h-full overflow-auto bg-transparent!"
+      class="flex-1 overflow-auto bg-transparent!"
       :class="{ 'snap-y': settings.listScrollAdsorption }"
       :showDivider="false"
       v-if="disPlayNavList?.length > 0"
@@ -84,7 +96,10 @@ import {
   settingDialogVisible,
   getCounter,
   counter,
+  narrowScreen,
+  collapsed,
 } from "../stores.js";
+import { MenuFilled } from "@vicons/material";
 import iconImage from "../assets/icon.png";
 import { getLangData } from "../lang/index.js";
 const disPlayNavList = computed(() => [

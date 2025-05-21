@@ -1,5 +1,8 @@
 import { ref, toRaw, watch, computed } from "vue";
-
+// 适配移动端
+export const narrowScreen = ref(document.body.clientWidth < 600);
+export const collapsed = ref(narrowScreen.value);
+// 数据
 export const systemConfig = ref({ navList: [], searchSource: [] });
 
 export const getNavList = computed(() => systemConfig.value.navList ?? []);

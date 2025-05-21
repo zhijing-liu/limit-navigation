@@ -164,7 +164,11 @@
         </template>
         <NList size="small">
           <NListItem>
-            <NFlex justify="space-between" align="center">
+            <NFlex
+              justify="space-between"
+              :align="narrowScreen ? 'flex-start' : 'center'"
+              :vertical="narrowScreen"
+            >
               <span class="flex-1">{{ getLangData("外部配置项地址") }} :</span>
               <NFlex class="flex-1 flex-nowrap! gap-1!" justify="flex-end">
                 <NInput
@@ -293,6 +297,7 @@ import {
   getUrlMap,
   themePrimaryColors,
   counter,
+  narrowScreen,
 } from "../stores.js";
 import { getLangData, settingOptions } from "../lang";
 import { hexToRgba } from "../utils.js";

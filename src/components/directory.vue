@@ -4,12 +4,12 @@
     collapseMode="transform"
     :width="narrowScreen ? '100%' : 240"
     :collapsedWidth="0"
-    :showTrigger="narrowScreen && !collapsed ? false : 'arrow-circle'"
+    :showTrigger="!narrowScreen"
     :position="narrowScreen ? 'absolute' : 'static'"
     bordered
   >
     <NFlex class="h-full overflow-hidden" vertical>
-      <NCard size="small" :bordered="false">
+      <NCard size="small" :bordered="false" contentClass="p-3!">
         <div class="flex gap-4">
           <NButton
             v-if="narrowScreen && !collapsed"
@@ -82,6 +82,8 @@ import {
   settingDialogVisible,
   searchDialogVisible,
   counter,
+  narrowScreen,
+  collapsed,
 } from "../stores.js";
 import { defineAsyncComponent, h, hydrateOnIdle } from "vue";
 import { NIcon, NImage } from "naive-ui";
@@ -96,8 +98,7 @@ const Search = defineAsyncComponent({
   loader: () => import("./search.vue"),
   hydrate: hydrateOnIdle(),
 });
-const narrowScreen = ref(document.body.clientWidth < 600);
-const collapsed = ref(narrowScreen.value);
+
 const renderIcon = ({ iconURL, url }) =>
   iconURL || url
     ? h(NIcon, null, () =>

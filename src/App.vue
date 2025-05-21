@@ -26,7 +26,7 @@
 import { darkTheme, lightTheme } from "naive-ui";
 import Directory from "./components/directory.vue";
 import Container from "./components/container.vue";
-import { systemConfig, settings } from "./stores.js";
+import { settings } from "./stores.js";
 import { watch, ref, defineAsyncComponent, hydrateOnIdle, computed } from "vue";
 import { hexToHsla, loadConfig } from "./utils.js";
 const themeOverrides = computed(() => {
@@ -68,12 +68,15 @@ watch(
 body
   padding 0
   margin 0
-  width 100svw
-  height 100svh
-
+  width 100vw
+  height 100vh
   #app
     height 100%
     width 100%
     overflow hidden
     display flex
+@supports (height 100svh)
+  body
+    width 100svw
+    height 100svh
 </style>
