@@ -1,4 +1,5 @@
 import { ref, toRaw, watch, computed } from "vue";
+
 // 适配移动端
 export const narrowScreen = ref(document.body.clientWidth < 600);
 export const collapsed = ref(narrowScreen.value);
@@ -61,6 +62,7 @@ export const settings = reactive({
   useSearchHistory: true,
   searchHistoryCount: 10,
   searchHistoryPrecedence: true,
+  pinyinPreciseDict: true,
   ...JSON.parse(localStorage.getItem("settings") ?? "{}"),
 });
 watch(
@@ -72,6 +74,16 @@ watch(
     deep: true,
   },
 );
+export const loadPinyinDicy = async () => {
+  const { addDict } = await import("pinyin-pro");
+  const { default: ModernChineseDict } = await import(
+    "@pinyin-pro/data/modern"
+  );
+  addDict(ModernChineseDict);
+};
+if (settings.pinyinPreciseDict) {
+  loadPinyinDicy();
+}
 // dialog 渲染
 export const settingDialogVisible = ref(false);
 export const searchDialogVisible = ref(false);

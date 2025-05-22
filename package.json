@@ -15,6 +15,7 @@
     "auto lang": "bun scripts/translate/index.js"
   },
   "dependencies": {
+    "@pinyin-pro/data": "^1.2.0",
     "bun": "^1.2.13",
     "fuse.js": "^7.1.0",
     "pinyin-pro": "^3.26.0",

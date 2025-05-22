@@ -4,6 +4,7 @@
     "": {
       "name": "web",
       "dependencies": {
+        "@pinyin-pro/data": "^1.2.0",
         "bun": "^1.2.13",
         "fuse.js": "^7.1.0",
         "pinyin-pro": "^3.26.0",
@@ -121,6 +122,8 @@
     "@oven/bun-windows-x64": ["@oven/bun-windows-x64@1.2.13", "https://registry.npmmirror.com/@oven/bun-windows-x64/-/bun-windows-x64-1.2.13.tgz", { "os": "win32", "cpu": "x64" }, "sha512-sArgbRmT7V3mUdNFaAdUcuJsuS+oeMDZLPWFSg0gtQZpRrURs9nPzEnZMmVCFo4+kPF9Tb5ujQT9uDySh6/qVg=="],
 
     "@oven/bun-windows-x64-baseline": ["@oven/bun-windows-x64-baseline@1.2.13", "https://registry.npmmirror.com/@oven/bun-windows-x64-baseline/-/bun-windows-x64-baseline-1.2.13.tgz", { "os": "win32", "cpu": "x64" }, "sha512-Aiezu99fOUJJpzGuylOJryd6w9Syg2TBigHeXV2+RJsouBzvAnIEYIBA94ZspRq1ulD26Wmkk8Ae+jZ4edk9GA=="],
+
+    "@pinyin-pro/data": ["@pinyin-pro/data@1.2.0", "https://registry.npmmirror.com/@pinyin-pro/data/-/data-1.2.0.tgz", {}, "sha512-Aw59BsYYV6jD1oMbT7eikQkmNssCBr548DLI+YOAGo6XWPR3Bxq1Zokj6RBLM5zCVT35yuvjo6Tv5q7VdTNZQQ=="],
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "https://registry.npmmirror.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
 

@@ -251,6 +251,19 @@
               ></NSwitch>
             </NFlex>
           </NListItem>
+          <NListItem v-if="settings.pinyinMatch">
+            <NFlex justify="space-between">
+              <span class="flex-1"
+                >{{ getLangData("是否启用更准确的拼音检索") }} :</span
+              >
+              <NSwitch
+                :value="settings.pinyinPreciseDict"
+                @updateValue="updatePinyinPreciseDict"
+                size="small"
+                :loading="loadPinyinPreciseDict"
+              ></NSwitch>
+            </NFlex>
+          </NListItem>
           <NListItem>
             <NFlex justify="space-between" class="gap-1!">
               <span class="flex-1"
@@ -348,7 +361,7 @@
   </NModal>
 </template>
 <script setup>
-import { toRaw } from "vue";
+import { toRaw, nextTick } from "vue";
 import {
   UploadFileFilled,
   RefreshFilled,
@@ -366,12 +379,33 @@ import {
   counter,
   narrowScreen,
   clearSearchHistory,
+  loadPinyinDicy,
 } from "../stores.js";
 import { getLangData, settingOptions } from "../lang";
 import { hexToRgba } from "../utils.js";
 import { useMessage } from "naive-ui";
 
 const message = useMessage();
+const loadPinyinPreciseDict = ref(false);
+const updatePinyinPreciseDict = (v) => {
+  if (v) {
+    loadPinyinPreciseDict.value = true;
+    nextTick(() => {
+      loadPinyinDicy()
+        .then(() => {
+          settings.pinyinPreciseDict = true;
+        })
+        .catch(() => {
+          message.error(getLangData("加载字典失败"));
+        })
+        .finally(() => {
+          loadPinyinPreciseDict.value = false;
+        });
+    });
+  } else {
+    settings.pinyinPreciseDict = false;
+  }
+};
 const inputConfig = async () => {
   const input = document.createElement("input");
   input.type = "file";
