@@ -40,4 +40,8 @@ export const dataList = {
   是否启用搜索历史: "Activer l’historique de recherche oui non",
   搜索历史优先: "Historique de recherche d’abord",
   保存搜索历史数量: "Nombre d’historique de recherche sauvegardé",
+  清空搜索历史: "Vider l’historique de recherche",
+  搜索历史: "Historique des recherches",
+  是否启用更准确的拼音检索: "Permet une recherche pinyin plus précise",
+  加载字典失败: "Échec du chargement du dictionnaire",
 };

@@ -39,4 +39,8 @@ export const dataList = {
   是否启用搜索历史: "Whether to enable search history",
   搜索历史优先: "Search history first",
   保存搜索历史数量: "Save the number of search histories",
+  清空搜索历史: "Clear the search history",
+  搜索历史: "Search history",
+  是否启用更准确的拼音检索: "Whether to enable more accurate pinyin search",
+  加载字典失败: "Failed to load the dictionary",
 };

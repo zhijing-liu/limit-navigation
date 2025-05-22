@@ -70,7 +70,14 @@
               :target="settings.aElementTarget"
               class="flex-1 h-full inline-block px-2"
               :class="{ searchActive: index === searchIndex }"
-              @click="() => (counter[item.url] = (counter[item.url] ?? 0) + 1)"
+              @click="
+                () => {
+                  counter[item.url] = (counter[item.url] ?? 0) + 1;
+                  if (item.history) {
+                    item.t = new Date().getTime();
+                  }
+                }
+              "
               >{{ item.label }} - [ {{ item.des }} ]
             </a>
             <NButton
@@ -99,7 +106,7 @@
         clearSearchHistory();
         message.success(getLangData('历史记录已重置'));
       "
-      >清空搜索历史</NButton
+      >{{ getLangData("清空搜索历史") }}</NButton
     >
   </NModal>
 </template>
@@ -199,7 +206,7 @@ const arrive = () => {
   addSearchHistory({
     label: searchValue.value,
     url,
-    des: "搜索历史",
+    des: getLangData("搜索历史"),
     history: true,
   });
   window.open(url, settings.aElementTarget);

@@ -41,4 +41,8 @@ export const dataList = {
   是否启用搜索历史: "Aktivieren sie die suche nach geschichte",
   搜索历史优先: "Die suche hat vorrang vor geschichte.",
   保存搜索历史数量: "Speichern sie historische daten",
+  清空搜索历史: "Suche starten",
+  搜索历史: "Suche nach geschichte",
+  是否启用更准确的拼音检索: "Eine präzisere synchronisation einschalten können",
+  加载字典失败: "Lade das wörterbuch.",
 };

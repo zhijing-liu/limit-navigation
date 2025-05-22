@@ -121,6 +121,9 @@ watch(
       JSON.stringify(toRaw(searchHistory.value)),
     );
   },
+  {
+    deep: true,
+  },
 );
 // 数据索引
 export const getSearchData = computed(() =>
