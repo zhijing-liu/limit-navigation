@@ -43,4 +43,16 @@ export const dataList = {
   搜索历史: "Search history",
   是否启用更准确的拼音检索: "Whether to enable more accurate pinyin search",
   加载字典失败: "Failed to load the dictionary",
+  欢迎回来: "Welcome back",
+  没有找到配置项哦: "The configuration item was not found",
+  用户: "user",
+  用户名: "User name",
+  密码: "password",
+  本机自定义配置: "Local custom configuration",
+  上传: "upload",
+  编辑数据: "Edit data",
+  删除: "delete",
+  编辑器: "editor",
+  "若您添加了用户信息 , 系统会自动从服务器自动同步您的配置,若希望修改您的配置，需前往配置管理器进行修改!":
+    "If you add user information, the system will automatically synchronize your configuration from the server. If you wish to modify your configuration, you need to go to the configuration manager to make the changes!",
 };

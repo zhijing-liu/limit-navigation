@@ -7,6 +7,7 @@
     class="w-[550px]!"
     :positiveText="getLangData('完成')"
     :positiveButtonProps="{ type: 'primary' }"
+    @positiveClick="submitSetting"
     :closeOnEsc="false"
     :maskClosable="false"
     :showIcon="false"
@@ -22,6 +23,72 @@
       </NFlex>
     </template>
     <NFlex class="h-[60vh] overflow-auto" vertical>
+      <NCard size="small" headerClass="px-2!" contentClass="pb-0!">
+        <template #header>
+          <NFlex align="center" class="gap-1!">
+            <NIcon>
+              <StyleSharp />
+            </NIcon>
+            <span>{{ getLangData("用户") }} :</span>
+          </NFlex>
+        </template>
+        <template #header-extra>
+          <NFlex>
+            <NButton
+              size="small"
+              type="error"
+              circle
+              strong
+              secondary
+              class="rounded!"
+              @click="
+                () => {
+                  userData.name = '';
+                  userData.passwd = '';
+                  temporaryUserData.name = '';
+                  temporaryUserData.passwd = '';
+                }
+              "
+            >
+              <template #icon>
+                <ExitToAppFilled />
+              </template>
+            </NButton>
+          </NFlex>
+        </template>
+        <NList size="small">
+          <NListItem>
+            <NFlex justify="space-between">
+              <span class="flex-1">{{ getLangData("用户名") }} :</span>
+              <NInput
+                v-model:value="temporaryUserData.name"
+                size="small"
+                class="flex-[0_0_200px]"
+                placeholder="配置用户"
+                :inputProps="{ autocomplete: 'off' }"
+              ></NInput>
+            </NFlex>
+          </NListItem>
+          <NListItem>
+            <NFlex justify="space-between">
+              <span class="flex-1">{{ getLangData("密码") }} :</span>
+              <NInput
+                v-model:value="temporaryUserData.passwd"
+                size="small"
+                type="password"
+                class="flex-[0_0_200px]"
+                placeholder="配置密码"
+                :inputProps="{ autocomplete: 'off' }"
+              ></NInput>
+            </NFlex>
+          </NListItem>
+        </NList>
+      </NCard>
+      <NAlert :showIcon="false" :bordered="false">{{
+        getLangData(
+          "若您添加了用户信息 , 系统会自动从服务器自动同步您的配置,若希望修改您的配置，需前往配置管理器进行修改!",
+        )
+      }}</NAlert>
       <NCard size="small" headerClass="px-2!" contentClass="pb-0!">
         <template #header>
           <NFlex align="center" class="gap-1!">
@@ -169,37 +236,54 @@
               :align="narrowScreen ? 'flex-start' : 'center'"
               :vertical="narrowScreen"
             >
-              <span class="flex-1">{{ getLangData("外部配置项地址") }} :</span>
+              <span class="flex-1">{{ getLangData("本机自定义配置") }} :</span>
               <NFlex class="flex-1 flex-nowrap! gap-1!" justify="flex-end">
-                <NInput
-                  v-model:value="settings.externalDataUrl"
-                  class="flex-[0_0_200px]"
-                  :placeholder="`${getLangData('接口地址')} , ${getLangData('只支持GET请求')}`"
-                  size="small"
-                >
-                </NInput>
                 <NButton
                   @click="uploadSystemConfig"
-                  circle
                   strong
                   secondary
                   type="primary"
                   class="rounded!"
                   size="small"
+                  v-if="settings.externalData === ''"
                 >
+                  {{ getLangData("上传") }}
                   <template #icon>
                     <UploadFileFilled />
                   </template>
                 </NButton>
-                <a href="/reduce.html" target="_blank">
+                <template v-else>
+                  <a href="/reduce.html?default=externalData" target="_blank">
+                    <NButton
+                      strong
+                      secondary
+                      type="primary"
+                      class="rounded!"
+                      size="small"
+                    >
+                      {{ getLangData("编辑数据") }}
+                      <template #icon>
+                        <DriveFileRenameOutlineFilled />
+                      </template>
+                    </NButton>
+                  </a>
                   <NButton
-                    circle
+                    @click="() => (settings.externalData = '')"
                     strong
                     secondary
                     type="primary"
                     class="rounded!"
                     size="small"
                   >
+                    {{ getLangData("删除") }}
+                    <template #icon>
+                      <UploadFileFilled />
+                    </template>
+                  </NButton>
+                </template>
+                <a href="/reduce.html" target="_blank">
+                  <NButton strong type="primary" class="rounded!" size="small">
+                    {{ getLangData("编辑器") }}
                     <template #icon>
                       <EditNoteFilled />
                     </template>
@@ -370,6 +454,8 @@ import {
   ColorLensFilled,
   SearchOutlined,
   EditNoteFilled,
+  DriveFileRenameOutlineFilled,
+  ExitToAppFilled,
 } from "@vicons/material";
 import {
   settings,
@@ -380,11 +466,15 @@ import {
   narrowScreen,
   clearSearchHistory,
   loadPinyinDicy,
+  userData,
 } from "../stores.js";
 import { getLangData, settingOptions } from "../lang";
 import { hexToRgba } from "../utils.js";
 import { useMessage } from "naive-ui";
-
+const temporaryUserData = reactive({
+  name: userData.name,
+  passwd: userData.passwd,
+});
 const message = useMessage();
 const loadPinyinPreciseDict = ref(false);
 const updatePinyinPreciseDict = (v) => {
@@ -438,12 +528,16 @@ const uploadSystemConfig = () => {
   input.addEventListener("change", () => {
     const reader = new FileReader();
     reader.addEventListener("loadend", () => {
-      settings.externalDataUrl = reader.result;
+      settings.externalData = reader.result;
     });
-    reader.readAsDataURL(input.files[0]);
+    reader.readAsText(input.files[0]);
   });
   input.click();
   input.remove();
+};
+const submitSetting = () => {
+  userData.name = temporaryUserData.name;
+  userData.passwd = temporaryUserData.passwd;
 };
 </script>
 <style scoped lang="stylus"></style>

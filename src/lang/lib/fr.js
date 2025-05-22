@@ -44,4 +44,16 @@ export const dataList = {
   搜索历史: "Historique des recherches",
   是否启用更准确的拼音检索: "Permet une recherche pinyin plus précise",
   加载字典失败: "Échec du chargement du dictionnaire",
+  欢迎回来: "Bienvenue de retour",
+  没有找到配置项哦: "Aucun élément de configuration trouvé oh",
+  用户: "Les utilisateurs",
+  用户名: "Nom de l’utilisateur",
+  密码: "Les mots de passe",
+  本机自定义配置: "Configuration personnalisée native",
+  上传: "télécharger",
+  编辑数据: "Éditer vos données",
+  删除: "supprimé",
+  编辑器: "Rédacteur en chef",
+  "若您添加了用户信息 , 系统会自动从服务器自动同步您的配置,若希望修改您的配置，需前往配置管理器进行修改!":
+    "Si vous ajoutez des informations utilisateur, le système synchronise automatiquement votre configuration depuis le serveur. Si vous souhaitez modifier votre configuration, vous devez vous rendre dans le gestionnaire de configuration pour le faire!",
 };

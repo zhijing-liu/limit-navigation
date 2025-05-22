@@ -1,5 +1,3 @@
-import { settings, systemConfig } from "./stores.js";
-
 export const hexToRgba = (color, opacity = 1) => {
   const r = parseInt(color.slice(1, 3), 16);
   const g = parseInt(color.slice(3, 5), 16);
@@ -53,26 +51,24 @@ export const hexToHsla = (color, opacity) => {
 };
 export const loadConfig = async (urls) => {
   const data = await Promise.all(
-    urls.map((url) => {
+    urls.map(({ url, success, error }) => {
       const urlIns = new URL(url, location.origin);
       urlIns.searchParams.set("t", new Date().getTime().toString());
       return fetch(urlIns, {
         method: "GET",
       })
         .then((res) => res.json())
-        .catch(() => ({}));
+        .then((r) => {
+          return success?.(r) ?? r;
+        })
+        .catch(() => {
+          return error?.() ?? {};
+        });
     }),
   );
   const navList = data.map((item) => item.navList ?? []).flat();
   const searchSource = data.map((item) => item.searchSource ?? []).flat();
-  for (const item of data) {
-    systemConfig.value = {
-      ...systemConfig.value,
-      ...item,
-    };
-  }
-  systemConfig.value = {
-    ...systemConfig.value,
+  return {
     navList,
     searchSource,
   };

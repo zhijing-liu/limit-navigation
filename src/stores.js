@@ -48,9 +48,9 @@ export const themePrimaryColors = reactive([
 export const settings = reactive({
   darkTheme: true,
   menuDefaultExpandAll: true,
-  externalDataUrl: "",
+  externalData: "",
   loadDefaultConfig: true,
-  listScrollAdsorption: true,
+  listScrollAdsorption: false,
   aElementTarget: "_blank",
   lang: "zh-CHS",
   searchSource: "",
@@ -134,4 +134,19 @@ export const getSearchData = computed(() =>
         ...(!settings.searchHistoryPrecedence ? getSearchHistory.value : []),
       ]
     : getItemList.value,
+);
+// 用户配置
+export const userData = reactive({
+  name: "",
+  passwd: "",
+  ...JSON.parse(localStorage.getItem("userData") || "{}"),
+});
+watch(
+  () => userData,
+  () => {
+    localStorage.setItem("userData", JSON.stringify(toRaw(userData)));
+  },
+  {
+    deep: true,
+  },
 );

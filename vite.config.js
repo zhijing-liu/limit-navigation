@@ -38,6 +38,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/req": `http://127.0.0.1:8888`,
+      "/api": `http://nav.zhijing.space`,
     },
   },
   build: {
@@ -49,7 +50,7 @@ export default defineConfig({
       input: {
         index: "index.html",
         reduce: "reduce.html",
-      }
+      },
     },
   },
 });

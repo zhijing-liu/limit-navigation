@@ -45,4 +45,16 @@ export const dataList = {
   搜索历史: "Suche nach geschichte",
   是否启用更准确的拼音检索: "Eine präzisere synchronisation einschalten können",
   加载字典失败: "Lade das wörterbuch.",
+  欢迎回来: "Willkommen zurück, nick.",
+  没有找到配置项哦: "Kein profil gefunden",
+  用户: "Oder benutzer.",
+  用户名: "benutzername",
+  密码: "kennwort",
+  本机自定义配置: "Diese maschine ist selbstbestimmt",
+  上传: "Lade hoch.",
+  编辑数据: "Daten bearbeiten",
+  删除: "löschen.",
+  编辑器: "editor",
+  "若您添加了用户信息 , 系统会自动从服务器自动同步您的配置,若希望修改您的配置，需前往配置管理器进行修改!":
+    "Wenn sie benutzerinformationen hinzufügen, synchronisieren sie ihre einstellungen automatisch vom server aus. Bitte wenden sie sich zur änderung an die einrichtungsverwaltung, wenn sie diese ändern möchten",
 };

@@ -23,12 +23,14 @@
   </NConfigProvider>
 </template>
 <script setup>
-import { darkTheme, lightTheme } from "naive-ui";
+import { darkTheme, lightTheme, useMessage } from "naive-ui";
 import Directory from "./components/directory.vue";
 import Container from "./components/container.vue";
-import { settings } from "./stores.js";
+import { settings, systemConfig, userData } from "./stores.js";
 import { watch, ref, defineAsyncComponent, hydrateOnIdle, computed } from "vue";
 import { hexToHsla, loadConfig } from "./utils.js";
+import { getLangData } from "./lang/index.js";
+const message = useMessage();
 const themeOverrides = computed(() => {
   const { h, s, l } = hexToHsla(settings.primaryColor);
   return {
@@ -46,21 +48,59 @@ const Setting = defineAsyncComponent({
 });
 const loading = ref(true);
 watch(
-  () => `${settings.loadDefaultConfig} ${settings.externalDataUrl}`,
+  () => [settings.loadDefaultConfig, settings.externalData, userData],
   async () => {
     loading.value = true;
     const urls = [];
     if (settings.loadDefaultConfig) {
-      urls.push("/systemConfig.json");
+      urls.push({
+        url: "/systemConfig.json",
+      });
     }
-    if (settings.externalDataUrl) {
-      urls.push(settings.externalDataUrl);
+    if (userData.name) {
+      const url = new URL("/api/getUserData.php", location.href);
+      url.searchParams.set("name", userData.name);
+      url.searchParams.set("passwd", userData.passwd);
+      urls.push({
+        url: url.toString(),
+        success: ({ code, data }) => {
+          if (code === 0) {
+            message.success(
+              `${userData.name.toUpperCase()} , ${getLangData("欢迎回来")} !`,
+            );
+            return JSON.parse(data);
+          } else {
+            throw Error();
+          }
+        },
+        error: () => {
+          message.warning(
+            `${userData.name.toUpperCase()} , ${getLangData("没有找到配置项哦")} !`,
+          );
+        },
+      });
     }
-    await loadConfig(urls);
+    // 加载本地存储数据
+    let externalData;
+    try {
+      externalData = JSON.parse(settings.externalData);
+    } catch {
+      settings.externalData = "";
+    }
+    // 合并config
+    const config = await loadConfig(urls);
+    systemConfig.value = {
+      navList: [...(config.navList ?? []), ...(externalData?.navList ?? [])],
+      searchSource: [
+        ...(config.searchSource ?? []),
+        ...(externalData?.searchSource ?? []),
+      ],
+    };
     loading.value = false;
   },
   {
     immediate: true,
+    deep: true,
   },
 );
 </script>
