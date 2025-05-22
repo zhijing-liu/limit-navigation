@@ -1,304 +1,291 @@
 <template>
-  <NConfigProvider
-    :theme="settings.darkTheme ? darkTheme : lightTheme"
-    class="w-full"
-    :themeOverrides="themeOverrides"
-  >
-    <NGlobalStyle />
-    <NFlex class="h-full w-full bg-cyan-900/30" justify="center" align="center">
-      <NCard class="w-[600px]!" title="设置配置项">
-        <template #header-extra>
-          <NFlex>
-            <NButton
-              circle
-              size="small"
-              class="rounded!"
-              type="primary"
-              @click="() => (addItemDialogVisible = true)"
-            >
-              <template #icon><AddFilled /></template>
-            </NButton>
-            <NButton
-              circle
-              size="small"
-              class="rounded!"
-              type="warning"
-              @click="
-                () => {
-                  systemConfig.navList = [];
-                  fileList = [];
-                }
-              "
-            >
-              <template #icon><RefreshFilled /></template>
-            </NButton>
-            <NButton
-              circle
-              size="small"
-              class="rounded!"
-              type="primary"
-              @click="downloadConfig"
-            >
-              <template #icon><CloudDownloadFilled /></template>
-            </NButton>
-            <NButton
-              circle
-              size="small"
-              class="rounded!"
-              type="primary"
-              @click="() => (uploadSystemConfigDialogVisible = true)"
-            >
-              <template #icon><CloudUploadFilled /></template>
-            </NButton>
-          </NFlex>
-        </template>
-        <NUpload
-          v-if="getNavList.length === 0"
-          v-model:fileList="fileList"
-          :customRequest="loadCustomData"
-        >
-          <NUploadDragger v-if="fileList.length === 0">点击上传</NUploadDragger>
-        </NUpload>
-        <NList v-else class="max-h-[60vh] overflow-auto">
-          <NListItem v-for="item in getNavList" :key="item.label">
-            <NCard
-              :title="`${item.label} :`"
-              size="small"
-              :bordered="false"
-              contentClass="px-2!"
-            >
-              <template #header-extra>
-                <NFlex>
-                  <NButton
-                    circle
-                    size="small"
-                    class="rounded!"
-                    type="primary"
-                    @click="
-                      () => {
-                        editItem = item;
-                        addUnitDialogVisible = true;
-                      }
-                    "
-                  >
-                    <template #icon><AddFilled /></template>
-                  </NButton>
-                  <NPopconfirm
-                    @positiveClick="
-                      () =>
-                        (systemConfig.navList = systemConfig.navList.filter(
-                          (i) => i.label !== item.label,
-                        ))
-                    "
-                    negativeText="不了"
-                    positiveText="是的"
-                  >
-                    <template #trigger>
-                      <NButton
-                        circle
-                        size="small"
-                        class="rounded!"
-                        type="error"
-                      >
-                        <template #icon><DeleteForeverTwotone /></template>
-                      </NButton>
-                    </template>
-                    确定要删除当前分组？
-                  </NPopconfirm>
-                </NFlex>
-              </template>
-              <NList>
-                <NListItem
-                  v-for="unit in item.data"
-                  :key="unit.url"
-                  class="hover:bg-gray-600/40 rounded px-2! cursor-pointer py-2! bg-gray-300/20 mb-1"
-                >
-                  <NFlex justify="space-between" align="center">
-                    <span>{{ unit.label }}</span>
-                    <NFlex>
-                      <NButton
-                        circle
-                        size="small"
-                        class="rounded!"
-                        type="primary"
-                        @click="
-                          () => {
-                            addUnitFormData = { ...unit };
-                            addUnitDialogVisible = true;
-                          }
-                        "
-                      >
-                        <template #icon><EditFilled /></template>
-                      </NButton>
-                      <NPopconfirm
-                        @positiveClick="
-                          () =>
-                            (item.data = item.data.filter((u) => u !== unit))
-                        "
-                        negativeText="不了"
-                        positiveText="是的"
-                      >
-                        <template #trigger>
-                          <NButton
-                            circle
-                            size="small"
-                            class="rounded!"
-                            type="error"
-                          >
-                            <template #icon><DeleteForeverTwotone /></template>
-                          </NButton>
-                        </template>
-                        确定要删除当前地址？
-                      </NPopconfirm>
-                    </NFlex>
-                  </NFlex>
-                </NListItem>
-              </NList>
-            </NCard>
-          </NListItem>
-        </NList>
-        <template #action>
+  <NFlex class="h-full w-full bg-cyan-900/30" justify="center" align="center">
+    <NCard class="w-[600px]!" title="设置配置项">
+      <template #header-extra>
+        <NFlex>
           <NButton
-            @click="loadDefaultConfig"
-            v-if="getNavList.length === 0"
+            circle
+            size="small"
+            class="rounded!"
             type="primary"
-            >导入默认数据</NButton
+            @click="() => (addItemDialogVisible = true)"
           >
-        </template>
-      </NCard>
-    </NFlex>
-    <NModal
-      v-model:show="addItemDialogVisible"
-      preset="dialog"
-      title="增加分类"
-      @positiveClick="submitAddItem"
-      positiveText="添加"
-      contentClass="m-0!"
-    >
-      <NForm
-        size="small"
-        labelPlacement="left"
-        labelWidth="80px"
-        labelAlign="left"
-        ref="addItemFormIns"
-        :model="addItemFormData"
-        :rules="addItemFormRules"
-        class="pt-8"
+            <template #icon><AddFilled /></template>
+          </NButton>
+          <NButton
+            circle
+            size="small"
+            class="rounded!"
+            type="warning"
+            @click="
+              () => {
+                systemConfig.navList = [];
+                fileList = [];
+              }
+            "
+          >
+            <template #icon><RefreshFilled /></template>
+          </NButton>
+          <NButton
+            circle
+            size="small"
+            class="rounded!"
+            type="primary"
+            @click="downloadConfig"
+          >
+            <template #icon><CloudDownloadFilled /></template>
+          </NButton>
+          <NButton
+            circle
+            size="small"
+            class="rounded!"
+            type="primary"
+            @click="() => (uploadSystemConfigDialogVisible = true)"
+          >
+            <template #icon><CloudUploadFilled /></template>
+          </NButton>
+        </NFlex>
+      </template>
+      <NUpload
+        v-if="getNavList.length === 0"
+        v-model:fileList="fileList"
+        :customRequest="loadCustomData"
       >
-        <NFormItem label="名称 :" path="label">
-          <NInput
-            placeholder="输入分组名称"
-            v-model:value="addItemFormData.label"
-          ></NInput>
-        </NFormItem>
-      </NForm>
-    </NModal>
-    <NModal
-      v-model:show="addUnitDialogVisible"
-      preset="dialog"
-      title="设置地址"
-      @positiveClick="submitAddUnit"
-      positiveText="保存"
-      @close="addUnitDialogClose"
-    >
-      <NForm
-        size="small"
-        labelPlacement="left"
-        labelWidth="80px"
-        labelAlign="left"
-        ref="addUnitFormIns"
-        :model="addUnitFormData"
-        :rules="addUnitFormRules"
-        class="py-2"
-      >
-        <NFormItem
-          :showLabel="false"
-          v-if="addUnitFormData.iconURL || addUnitFormData.url"
+        <NUploadDragger v-if="fileList.length === 0">点击上传</NUploadDragger>
+      </NUpload>
+      <NList v-else class="max-h-[60vh] overflow-auto">
+        <NListItem v-for="item in getNavList" :key="item.label">
+          <NCard
+            :title="`${item.label} :`"
+            size="small"
+            :bordered="false"
+            contentClass="px-2!"
+          >
+            <template #header-extra>
+              <NFlex>
+                <NButton
+                  circle
+                  size="small"
+                  class="rounded!"
+                  type="primary"
+                  @click="
+                    () => {
+                      editItem = item;
+                      addUnitDialogVisible = true;
+                    }
+                  "
+                >
+                  <template #icon><AddFilled /></template>
+                </NButton>
+                <NPopconfirm
+                  @positiveClick="
+                    () =>
+                      (systemConfig.navList = systemConfig.navList.filter(
+                        (i) => i.label !== item.label,
+                      ))
+                  "
+                  negativeText="不了"
+                  positiveText="是的"
+                >
+                  <template #trigger>
+                    <NButton circle size="small" class="rounded!" type="error">
+                      <template #icon><DeleteForeverTwotone /></template>
+                    </NButton>
+                  </template>
+                  确定要删除当前分组？
+                </NPopconfirm>
+              </NFlex>
+            </template>
+            <NList>
+              <NListItem
+                v-for="unit in item.data"
+                :key="unit.url"
+                class="hover:bg-gray-600/40 rounded px-2! cursor-pointer py-2! bg-gray-300/20 mb-1"
+              >
+                <NFlex justify="space-between" align="center">
+                  <span>{{ unit.label }}</span>
+                  <NFlex>
+                    <NButton
+                      circle
+                      size="small"
+                      class="rounded!"
+                      type="primary"
+                      @click="
+                        () => {
+                          addUnitFormData = { ...unit };
+                          addUnitDialogVisible = true;
+                        }
+                      "
+                    >
+                      <template #icon><EditFilled /></template>
+                    </NButton>
+                    <NPopconfirm
+                      @positiveClick="
+                        () => (item.data = item.data.filter((u) => u !== unit))
+                      "
+                      negativeText="不了"
+                      positiveText="是的"
+                    >
+                      <template #trigger>
+                        <NButton
+                          circle
+                          size="small"
+                          class="rounded!"
+                          type="error"
+                        >
+                          <template #icon><DeleteForeverTwotone /></template>
+                        </NButton>
+                      </template>
+                      确定要删除当前地址？
+                    </NPopconfirm>
+                  </NFlex>
+                </NFlex>
+              </NListItem>
+            </NList>
+          </NCard>
+        </NListItem>
+      </NList>
+      <template #action>
+        <NButton
+          @click="loadDefaultConfig"
+          v-if="getNavList.length === 0"
+          type="primary"
+          >导入默认数据</NButton
         >
-          <NFlex justify="center" class="w-full">
-            <NImage
-              :src="
-                addUnitFormData.iconURL || `${addUnitFormData.url}/favicon.ico`
-              "
-              class="h-[80px]"
-              :showToolbar="false"
-            >
-              <template #error>
-                <n-icon :size="80" color="lightGrey">
-                  <BrokenImageOutlined />
-                </n-icon>
-              </template>
-            </NImage>
-          </NFlex>
-        </NFormItem>
-        <NFormItem label="名称 :" path="label">
-          <NInput
-            placeholder="输入名称"
-            v-model:value="addUnitFormData.label"
-          ></NInput>
-        </NFormItem>
-        <NFormItem label="描述 :" path="des">
-          <NInput
-            placeholder="输入描述"
-            v-model:value="addUnitFormData.des"
-          ></NInput>
-        </NFormItem>
-        <NFormItem label="地址 :" path="url">
+      </template>
+    </NCard>
+  </NFlex>
+  <NModal
+    v-model:show="addItemDialogVisible"
+    preset="dialog"
+    title="增加分类"
+    @positiveClick="submitAddItem"
+    positiveText="添加"
+    contentClass="m-0!"
+  >
+    <NForm
+      size="small"
+      labelPlacement="left"
+      labelWidth="80px"
+      labelAlign="left"
+      ref="addItemFormIns"
+      :model="addItemFormData"
+      :rules="addItemFormRules"
+      class="pt-8"
+    >
+      <NFormItem label="名称 :" path="label">
+        <NInput
+          placeholder="输入分组名称"
+          v-model:value="addItemFormData.label"
+        ></NInput>
+      </NFormItem>
+    </NForm>
+  </NModal>
+  <NModal
+    v-model:show="addUnitDialogVisible"
+    preset="dialog"
+    title="设置地址"
+    @positiveClick="submitAddUnit"
+    positiveText="保存"
+    @close="addUnitDialogClose"
+  >
+    <NForm
+      size="small"
+      labelPlacement="left"
+      labelWidth="80px"
+      labelAlign="left"
+      ref="addUnitFormIns"
+      :model="addUnitFormData"
+      :rules="addUnitFormRules"
+      class="py-2"
+    >
+      <NFormItem
+        :showLabel="false"
+        v-if="addUnitFormData.iconURL || addUnitFormData.url"
+      >
+        <NFlex justify="center" class="w-full">
+          <NImage
+            :src="
+              addUnitFormData.iconURL || `${addUnitFormData.url}/favicon.ico`
+            "
+            class="h-[80px]"
+            :showToolbar="false"
+          >
+            <template #error>
+              <n-icon :size="80" color="lightGrey">
+                <BrokenImageOutlined />
+              </n-icon>
+            </template>
+          </NImage>
+        </NFlex>
+      </NFormItem>
+      <NFormItem label="名称 :" path="label">
+        <NInput
+          placeholder="输入名称"
+          v-model:value="addUnitFormData.label"
+        ></NInput>
+      </NFormItem>
+      <NFormItem label="描述 :" path="des">
+        <NInput
+          placeholder="输入描述"
+          v-model:value="addUnitFormData.des"
+        ></NInput>
+      </NFormItem>
+      <NFormItem label="地址 :" path="url">
+        <NInput
+          placeholder="输入地址"
+          v-model:value="addUnitFormData.url"
+        ></NInput>
+      </NFormItem>
+      <NFormItem label="图标 :">
+        <NFlex :wrap="false" class="w-full">
           <NInput
             placeholder="输入地址"
-            v-model:value="addUnitFormData.url"
+            v-model:value="addUnitFormData.iconURL"
+            class="flex-1"
+            clearable
           ></NInput>
-        </NFormItem>
-        <NFormItem label="图标 :">
-          <NFlex :wrap="false" class="w-full">
-            <NInput
-              placeholder="输入地址"
-              v-model:value="addUnitFormData.iconURL"
-              class="flex-1"
-              clearable
-            ></NInput>
-            <NButton size="small" type="primary" @click="uploadIcon"
-              >上传文件</NButton
-            >
-          </NFlex>
-        </NFormItem>
-      </NForm>
-    </NModal>
-    <NModal
-      v-model:show="uploadSystemConfigDialogVisible"
-      preset="dialog"
-      title="上传配置到服务器"
-      @positiveClick="submitUploadSystemConfig"
-      positiveText="开始上传"
-      :positiveButtonProps="{ loading: uploadSystemConfigLoading }"
+          <NButton size="small" type="primary" @click="uploadIcon"
+            >上传文件</NButton
+          >
+        </NFlex>
+      </NFormItem>
+    </NForm>
+  </NModal>
+  <NModal
+    v-model:show="uploadSystemConfigDialogVisible"
+    preset="dialog"
+    title="上传配置到服务器"
+    @positiveClick="submitUploadSystemConfig"
+    positiveText="开始上传"
+    :positiveButtonProps="{ loading: uploadSystemConfigLoading }"
+  >
+    <NForm
+      size="small"
+      labelPlacement="left"
+      labelWidth="80px"
+      labelAlign="left"
+      ref="addUnitFormIns"
+      class="py-2"
+      :disabled="uploadSystemConfigLoading"
     >
-      <NForm
-        size="small"
-        labelPlacement="left"
-        labelWidth="80px"
-        labelAlign="left"
-        ref="addUnitFormIns"
-        class="py-2"
-        :disabled="uploadSystemConfigLoading"
-      >
-        <NFormItem label="用户名 :" path="label">
-          <NInput
-            placeholder="输入用户名"
-            v-model:value="temporaryUserData.name"
-            :inputProps="{ autocomplete: 'off' }"
-          ></NInput>
-        </NFormItem>
-        <NFormItem label="密码 :" path="label">
-          <NInput
-            placeholder="输入密码"
-            v-model:value="temporaryUserData.passwd"
-            type="password"
-            :inputProps="{ autocomplete: 'off' }"
-          ></NInput>
-        </NFormItem>
-      </NForm>
-    </NModal>
-  </NConfigProvider>
+      <NFormItem label="用户名 :" path="label">
+        <NInput
+          placeholder="输入用户名"
+          v-model:value="temporaryUserData.name"
+          :inputProps="{ autocomplete: 'off' }"
+        ></NInput>
+      </NFormItem>
+      <NFormItem label="密码 :" path="label">
+        <NInput
+          placeholder="输入密码"
+          v-model:value="temporaryUserData.passwd"
+          type="password"
+          :inputProps="{ autocomplete: 'off' }"
+        ></NInput>
+      </NFormItem>
+    </NForm>
+  </NModal>
 </template>
 <script setup>
 import { getNavList, settings, systemConfig, userData } from "../stores.js";

@@ -1,26 +1,17 @@
 <template>
-  <NConfigProvider
-    :theme="settings.darkTheme ? darkTheme : lightTheme"
-    class="w-full"
-    :themeOverrides="themeOverrides"
+  <NSpin
+    :show="loading"
+    contentClass="w-full h-full"
+    class="h-full w-full"
+    :delay="300"
+    size="small"
   >
-    <NMessageProvider>
-      <NGlobalStyle />
-      <NSpin
-        :show="loading"
-        contentClass="w-full h-full"
-        class="h-full w-full"
-        :delay="300"
-        size="small"
-      >
-        <NLayout hasSider class="h-full" v-if="!loading">
-          <Directory />
-          <Container />
-        </NLayout>
-      </NSpin>
-      <Setting />
-    </NMessageProvider>
-  </NConfigProvider>
+    <NLayout hasSider class="h-full" v-if="!loading">
+      <Directory />
+      <Container />
+    </NLayout>
+  </NSpin>
+  <Setting />
 </template>
 <script setup>
 import { darkTheme, lightTheme, useMessage } from "naive-ui";
@@ -31,17 +22,7 @@ import { watch, ref, defineAsyncComponent, hydrateOnIdle, computed } from "vue";
 import { hexToHsla, loadConfig } from "./utils.js";
 import { getLangData } from "./lang/index.js";
 const message = useMessage();
-const themeOverrides = computed(() => {
-  const { h, s, l } = hexToHsla(settings.primaryColor);
-  return {
-    common: {
-      primaryColor: settings.primaryColor,
-      primaryColorHover: `hsl(${h},${s}%,${Math.max(l, l + 10)}%)`,
-      primaryColorPressed: `hsl(${h},${s}%,${Math.min(l, l - 5)}%)`,
-      primaryColorSuppl: `hsl(${h},${s}%,${Math.max(l, l + 20)}%)`,
-    },
-  };
-});
+
 const Setting = defineAsyncComponent({
   loader: () => import("./components/setting.vue"),
   hydrate: hydrateOnIdle(),
