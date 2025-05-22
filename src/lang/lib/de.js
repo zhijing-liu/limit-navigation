@@ -35,4 +35,10 @@ export const dataList = {
   模糊搜索宽容度: "Suche suche suche suche suche erfolglos",
   严格: "strengen.",
   宽容: "toleranz.",
+  历史记录已重置: "Historische aufzeichnungen wurden zurückgesetzt",
+  是否启用拼音模糊检索:
+    "Ist unklar, ob jigsaw als antwort ausgewählt werden soll",
+  是否启用搜索历史: "Aktivieren sie die suche nach geschichte",
+  搜索历史优先: "Die suche hat vorrang vor geschichte.",
+  保存搜索历史数量: "Speichern sie historische daten",
 };

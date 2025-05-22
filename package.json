@@ -10,12 +10,14 @@
     "Upload": "bun ./scripts/build-push/index.js",
     "UploadJY": "bun ./scripts/build-push/index.js server=JYWebHosting",
     "updateSystemConfig": "bun ./scripts/build-push/updateSystemConfig.js",
+    "updateSystemConfigJY": "bun ./scripts/build-push/updateSystemConfig.js server=JYWebHosting",
     "lang": "bun ./scripts/translate/tool/index.js path=src/lang",
     "auto lang": "bun scripts/translate/index.js"
   },
   "dependencies": {
     "bun": "^1.2.13",
     "fuse.js": "^7.1.0",
+    "pinyin-pro": "^3.26.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {

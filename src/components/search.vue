@@ -32,7 +32,8 @@
           ref="searchInputIns"
           :placeholder="getLangData('输入搜索地址或搜索内容')"
           @keydown="searchKeyDown"
-          @change="inputChange"
+          @compositionstart="() => (isComposing = true)"
+          @compositionend="() => (isComposing = false)"
           clearable
           @fucus="() => (inputIsFocus = true)"
           @blur="() => (inputIsFocus = false)"
@@ -50,8 +51,7 @@
         <NListItem
           v-for="(item, index) in searchResult"
           :key="item"
-          class="p-0! leading-12 rounded"
-          :class="{ 'bg-teal-700/40': index === searchIndex }"
+          class="p-0! leading-12"
           @click="
             () => {
               searchValue = '';
@@ -59,34 +59,74 @@
             }
           "
         >
-          <a
-            :href="item.url"
-            :target="settings.aElementTarget"
-            class="w-full h-full inline-block px-2 hover:bg-gray-600/40 rounded"
-            :class="{ searchActive: index === searchIndex }"
-            @click="() => (counter[item.url] = (counter[item.url] ?? 0) + 1)"
-            >{{ item.label }} - [ {{ item.des }} ]
-          </a>
+          <NFlex
+            justify="space-between"
+            align="center"
+            :class="{ 'bg-teal-700/40': index === searchIndex }"
+            class="px-2 rounded! hover:bg-gray-600/40 overflow-hidden mb-1"
+          >
+            <a
+              :href="item.url"
+              :target="settings.aElementTarget"
+              class="flex-1 h-full inline-block px-2"
+              :class="{ searchActive: index === searchIndex }"
+              @click="() => (counter[item.url] = (counter[item.url] ?? 0) + 1)"
+              >{{ item.label }} - [ {{ item.des }} ]
+            </a>
+            <NButton
+              circle
+              strong
+              secondary
+              type="tertiary"
+              class="rounded!"
+              @click.stop="() => removeSearchHistory(item.label)"
+              v-if="item.history"
+            >
+              <template #icon>
+                <CloseOutlined />
+              </template>
+            </NButton>
+          </NFlex>
         </NListItem>
       </NList>
     </NFlex>
+    <NButton
+      v-if="settings.useSearchHistory && getSearchHistory.length > 0"
+      class="w-full!"
+      type="primary"
+      secondary
+      @click="
+        clearSearchHistory();
+        message.success(getLangData('历史记录已重置'));
+      "
+      >清空搜索历史</NButton
+    >
   </NModal>
 </template>
 <script setup>
 import {
+  addSearchHistory,
+  clearSearchHistory,
   counter,
-  getNavList,
+  getSearchData,
+  getSearchHistory,
   getSearchSource,
-  getUrlMap,
+  removeSearchHistory,
   searchDialogVisible,
   settings,
 } from "../stores.js";
-import { ArrowForwardFilled, SearchFilled } from "@vicons/material";
+import {
+  ArrowForwardFilled,
+  SearchFilled,
+  CloseOutlined,
+} from "@vicons/material";
 import { getLangData } from "../lang";
 import { computed, h, watch } from "vue";
-import { NButton, NIcon } from "naive-ui";
+import { NButton, NIcon, useMessage } from "naive-ui";
 import Fuse from "fuse.js";
+import { match } from "pinyin-pro";
 
+const message = useMessage();
 const searchValue = ref("");
 const searchValueTrim = computed(() => searchValue.value.trim());
 const searchValueEmpty = computed(() => searchValueTrim.value.length === 0);
@@ -94,23 +134,40 @@ const searchInputIns = ref();
 const searchIndex = ref(-1);
 const searchActiveItem = ref(null);
 const inputIsFocus = ref(false);
-
+const isComposing = ref(false);
 const urlReg =
   /^(?:(http|https|ftp):\/\/)?((?:[\w-]+\.)+[a-z0-9]+)((?:\/[^/?#]*)+)?(\?[^#]+)?(#.+)?$/i;
 const searchValueIsUrl = computed(() => urlReg.test(searchValueTrim.value));
-
 const fuse = computed(
   () =>
-    new Fuse(Object.values(getUrlMap.value), {
+    new Fuse(getSearchData.value, {
       threshold: settings.searchThreshold,
       ignoreLocation: true,
       keys: ["des", "url", "label"],
     }),
 );
+const pinyinMatchData = computed(() =>
+  getSearchData.value.map((item) => ({
+    item,
+    value: `${item.url},${item.des},${item.label}`,
+  })),
+);
+
 const searchResult = computed(() =>
   searchValueTrim.value.length > 0
-    ? fuse.value.search(searchValueTrim.value).map(({ item }) => item)
-    : Object.values(getUrlMap.value),
+    ? [
+        ...new Set(
+          [
+            ...fuse.value.search(searchValueTrim.value),
+            ...(settings.pinyinMatch
+              ? pinyinMatchData.value.filter((item) =>
+                  match(item.value, searchValue.value),
+                )
+              : []),
+          ].map(({ item }) => item),
+        ),
+      ]
+    : getSearchData.value,
 );
 watch(
   () => searchResult.value,
@@ -125,23 +182,27 @@ watch(
   },
 );
 const arrive = () => {
+  let url;
   if (searchValueIsUrl.value) {
-    let url = searchValue.value;
+    url = searchValue.value;
     if (url.startsWith("//")) {
       url = "https:" + url;
     } else if (!/^https?:\/\//i.test(url)) {
       url = "https://" + url;
     }
-    window.open(url, settings.aElementTarget);
   } else {
-    window.open(
-      settings.searchSource.url.replace(
-        "{{data}}",
-        searchValue.value.replaceAll(" ", "+"),
-      ),
-      settings.aElementTarget,
+    url = settings.searchSource.url.replace(
+      "{{data}}",
+      searchValue.value.replaceAll(" ", "+"),
     );
   }
+  addSearchHistory({
+    label: searchValue.value,
+    url,
+    des: "搜索历史",
+    history: true,
+  });
+  window.open(url, settings.aElementTarget);
 };
 const inputChange = () => {
   if (searchActiveItem.value) {
@@ -176,6 +237,8 @@ const searchKeyDown = ({ key, code }) => {
         Math.min(getSearchSource.value.length - 1, index + 1),
       );
     }
+  } else if (code === "Enter" && !isComposing.value) {
+    inputChange();
   }
 };
 const searchIconRender = ({ option }) =>

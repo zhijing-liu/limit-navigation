@@ -9,24 +9,21 @@ export const getNavList = computed(() => systemConfig.value.navList ?? []);
 export const getSearchSource = computed(
   () => systemConfig.value.searchSource ?? [],
 );
+export const getItemList = computed(() =>
+  getNavList.value.map((item) => item.data).flat(),
+);
 export const getUrlMap = computed(() =>
-  Object.fromEntries(
-    getNavList.value
-      .map((item) => item.data)
-      .flat()
-      .map((item) => [item.url, item]),
-  ),
+  Object.fromEntries(getItemList.value.map((item) => [item.url, item])),
 );
 // 计数器
 export const counter = ref(JSON.parse(localStorage.getItem("counter") ?? "{}"));
-export const getCounter = computed(() => {
-  return Object.entries(counter.value)
+export const getCounter = computed(() =>
+  Object.entries(counter.value)
     .sort(([, valueA], [, valueB]) => valueB - valueA)
     .map(([url]) => getUrlMap.value[url])
     .filter((item) => item)
-    .slice(0, settings.recommendCount);
-});
-
+    .slice(0, settings.recommendCount),
+);
 watch(
   () => counter.value,
   () => {
@@ -60,6 +57,10 @@ export const settings = reactive({
   primaryColor: "#009688",
   useSearchShortcutKey: true,
   searchThreshold: 0.1,
+  pinyinMatch: true,
+  useSearchHistory: true,
+  searchHistoryCount: 10,
+  searchHistoryPrecedence: true,
   ...JSON.parse(localStorage.getItem("settings") ?? "{}"),
 });
 watch(
@@ -74,3 +75,48 @@ watch(
 // dialog 渲染
 export const settingDialogVisible = ref(false);
 export const searchDialogVisible = ref(false);
+
+// 历史
+const searchHistory = ref(
+  JSON.parse(localStorage.getItem("searchHistory") ?? "{}"),
+);
+export const getSearchHistory = computed(() =>
+  Object.values(searchHistory.value)
+    .sort(({ t: t1 }, { t: t2 }) => t2 - t1)
+    .slice(0, settings.searchHistoryCount),
+);
+
+export const addSearchHistory = (value) => {
+  if (settings.useSearchHistory) {
+    searchHistory.value = Object.fromEntries(
+      [{ ...value, t: new Date().getTime() }, ...getSearchHistory.value]
+        .slice(0, settings.searchHistoryCount)
+        .map((item) => [item.label, item]),
+    );
+  }
+};
+export const removeSearchHistory = (value) => {
+  Reflect.deleteProperty(searchHistory.value, value);
+};
+export const clearSearchHistory = () => {
+  searchHistory.value = {};
+};
+watch(
+  () => searchHistory.value,
+  () => {
+    localStorage.setItem(
+      "searchHistory",
+      JSON.stringify(toRaw(searchHistory.value)),
+    );
+  },
+);
+// 数据索引
+export const getSearchData = computed(() =>
+  settings.useSearchHistory
+    ? [
+        ...(settings.searchHistoryPrecedence ? getSearchHistory.value : []),
+        ...getItemList.value,
+        ...(!settings.searchHistoryPrecedence ? getSearchHistory.value : []),
+      ]
+    : getItemList.value,
+);

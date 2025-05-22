@@ -35,4 +35,9 @@ export const dataList = {
   模糊搜索宽容度: "Tolérance de recherche floue",
   严格: "strictement",
   宽容: "La tolérance",
+  历史记录已重置: "L’historique a été réinitialisé",
+  是否启用拼音模糊检索: "Activer la récupération pinyin floue ou non",
+  是否启用搜索历史: "Activer l’historique de recherche oui non",
+  搜索历史优先: "Historique de recherche d’abord",
+  保存搜索历史数量: "Nombre d’historique de recherche sauvegardé",
 };

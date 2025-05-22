@@ -34,4 +34,9 @@ export const dataList = {
   模糊搜索宽容度: "Fuzzy search tolerance",
   严格: "strict",
   宽容: "tolerance",
+  历史记录已重置: "The historical record has been reset",
+  是否启用拼音模糊检索: "Whether to enable pinyin fuzzy search",
+  是否启用搜索历史: "Whether to enable search history",
+  搜索历史优先: "Search history first",
+  保存搜索历史数量: "Save the number of search histories",
 };

@@ -241,6 +241,17 @@
             </NFlex>
           </NListItem>
           <NListItem>
+            <NFlex justify="space-between">
+              <span class="flex-1"
+                >{{ getLangData("是否启用拼音模糊检索") }} :</span
+              >
+              <NSwitch
+                v-model:value="settings.pinyinMatch"
+                size="small"
+              ></NSwitch>
+            </NFlex>
+          </NListItem>
+          <NListItem>
             <NFlex justify="space-between" class="gap-1!">
               <span class="flex-1"
                 >{{ getLangData("模糊搜索宽容度") }} - [0(
@@ -275,6 +286,62 @@
               </NButton>
             </NFlex>
           </NListItem>
+          <NListItem>
+            <NFlex justify="space-between">
+              <span class="flex-1"
+                >{{ getLangData("是否启用搜索历史") }} :</span
+              >
+              <NSwitch
+                v-model:value="settings.useSearchHistory"
+                size="small"
+              ></NSwitch>
+            </NFlex>
+          </NListItem>
+          <template v-if="settings.useSearchHistory">
+            <NListItem>
+              <NFlex justify="space-between">
+                <span class="flex-1">{{ getLangData("搜索历史优先") }} :</span>
+                <NSwitch
+                  v-model:value="settings.searchHistoryPrecedence"
+                  size="small"
+                ></NSwitch>
+              </NFlex>
+            </NListItem>
+            <NListItem>
+              <NFlex justify="space-between" class="gap-1!">
+                <span class="flex-1"
+                  >{{ getLangData("保存搜索历史数量") }} :</span
+                >
+                <NInputNumber
+                  size="small"
+                  class="w-[100px] text-center"
+                  v-model:value="settings.searchHistoryCount"
+                  :min="0"
+                  :max="1000"
+                  :step="1"
+                  buttonPlacement="both"
+                ></NInputNumber>
+                <NButton
+                  size="small"
+                  type="warning"
+                  circle
+                  strong
+                  secondary
+                  class="rounded!"
+                  @click="
+                    () => {
+                      clearSearchHistory();
+                      message.success(getLangData('历史记录已重置'));
+                    }
+                  "
+                >
+                  <template #icon>
+                    <RefreshFilled />
+                  </template>
+                </NButton>
+              </NFlex>
+            </NListItem>
+          </template>
         </NList>
       </NCard>
     </NFlex>
@@ -298,6 +365,7 @@ import {
   themePrimaryColors,
   counter,
   narrowScreen,
+  clearSearchHistory,
 } from "../stores.js";
 import { getLangData, settingOptions } from "../lang";
 import { hexToRgba } from "../utils.js";
