@@ -209,7 +209,8 @@
               addUnitFormData.iconURL || `${addUnitFormData.url}/favicon.ico`
             "
             class="h-[80px]"
-            :showToolbar="false"
+            ref="imageIns"
+            :renderToolbar="renderImageToolbar"
           >
             <template #error>
               <n-icon :size="80" color="lightGrey">
@@ -289,8 +290,8 @@
 </template>
 <script setup>
 import { getNavList, settings, systemConfig, userData } from "../stores.js";
-import { darkTheme, lightTheme, useMessage } from "naive-ui";
-import { computed, ref, reactive, toRaw } from "vue";
+import { darkTheme, lightTheme, NButton, useMessage } from "naive-ui";
+import { computed, ref, reactive, toRaw, h } from "vue";
 import { hexToHsla, loadConfig } from "../utils.js";
 import {
   EditFilled,
@@ -356,6 +357,35 @@ const addItemFormRules = {
     },
   ],
 };
+const imageIns = ref();
+const renderImageToolbar = ({ nodes: { close } }) => [
+  h(
+    NButton,
+    {
+      type: "primary",
+      style: { marginLeft: "12px" },
+      onClick: () => {
+        console.log(close);
+        addUnitFormData.value.iconURL = imageIns.value.imageRef.currentSrc;
+        message.info("已将图片地址存为本地资源");
+      },
+    },
+    {
+      default: () => "设置图片为本地链接",
+    },
+  ),
+  h(
+    NButton,
+    {
+      type: "error",
+      style: { marginLeft: "12px" },
+      ...close.props,
+    },
+    {
+      default: () => "关闭",
+    },
+  ),
+];
 const editItem = ref();
 const addUnitDialogVisible = ref(false);
 const addUnitFormIns = ref();

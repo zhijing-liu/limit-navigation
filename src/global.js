@@ -21,8 +21,8 @@ const themeOverrides = computed(() => {
   };
 });
 export const getGlobal = (App) => ({
-  render() {
-    return h(
+  render: () =>
+    h(
       NConfigProvider,
       {
         theme: settings.darkTheme ? darkTheme : lightTheme,
@@ -30,6 +30,5 @@ export const getGlobal = (App) => ({
         themeOverrides,
       },
       () => [h(NMessageProvider, {}, () => [h(App)]), h(NGlobalStyle)],
-    );
-  },
+    ),
 });
