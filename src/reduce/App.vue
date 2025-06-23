@@ -1,6 +1,6 @@
 <template>
   <NFlex class="h-full w-full bg-cyan-900/30" justify="center" align="center">
-    <NCard class="w-[600px]!" title="设置配置项">
+    <NCard class="w-auto! min-w-[600px]" title="设置配置项">
       <template #header-extra>
         <NFlex>
           <NButton
@@ -54,7 +54,12 @@
         <NUploadDragger v-if="fileList.length === 0">点击上传</NUploadDragger>
       </NUpload>
       <NList v-else class="max-h-[60vh] overflow-auto">
-        <NListItem v-for="item in getNavList" :key="item.label">
+        <NListItem
+          v-for="(item, index) in getNavList"
+          :key="item.label"
+          :attr-groupName.attr="index"
+          class="listGroup"
+        >
           <NCard
             :title="`${item.label} :`"
             size="small"
@@ -97,50 +102,22 @@
               </NFlex>
             </template>
             <NList>
-              <NListItem
+              <ChildrenListItem
                 v-for="unit in item.data"
                 :key="unit.url"
-                class="hover:bg-gray-600/40 rounded px-2! cursor-pointer py-2! bg-gray-300/20 mb-1"
-              >
-                <NFlex justify="space-between" align="center">
-                  <span>{{ unit.label }}</span>
-                  <NFlex>
-                    <NButton
-                      circle
-                      size="small"
-                      class="rounded!"
-                      type="primary"
-                      @click="
-                        () => {
-                          addUnitFormData = { ...unit };
-                          addUnitDialogVisible = true;
-                        }
-                      "
-                    >
-                      <template #icon><EditFilled /></template>
-                    </NButton>
-                    <NPopconfirm
-                      @positiveClick="
-                        () => (item.data = item.data.filter((u) => u !== unit))
-                      "
-                      negativeText="不了"
-                      positiveText="是的"
-                    >
-                      <template #trigger>
-                        <NButton
-                          circle
-                          size="small"
-                          class="rounded!"
-                          type="error"
-                        >
-                          <template #icon><DeleteForeverTwotone /></template>
-                        </NButton>
-                      </template>
-                      确定要删除当前地址？
-                    </NPopconfirm>
-                  </NFlex>
-                </NFlex>
-              </NListItem>
+                :unit="unit"
+                :attr-itemName.attr="unit.url"
+                @add="
+                  () => {
+                    addUnitFormData = { ...unit };
+                    addUnitDialogVisible = true;
+                  }
+                "
+                @delete="
+                  () => (item.data = item.data.filter((u) => u !== unit))
+                "
+                @moveTo="moveTo"
+              />
             </NList>
           </NCard>
         </NListItem>
@@ -293,6 +270,7 @@ import { getNavList, settings, systemConfig, userData } from "../stores.js";
 import { darkTheme, lightTheme, NButton, useMessage } from "naive-ui";
 import { computed, ref, reactive, toRaw, h } from "vue";
 import { hexToHsla, loadConfig } from "../utils.js";
+import ChildrenListItem from "./childrenListItem.vue";
 import {
   EditFilled,
   AddFilled,
@@ -301,7 +279,9 @@ import {
   CloudUploadFilled,
   DeleteForeverTwotone,
   RefreshFilled,
+  DragIndicatorFilled,
 } from "@vicons/material";
+import { dragItem } from "./store.js";
 const message = useMessage();
 const temporaryUserData = reactive({
   name: userData.name,
@@ -365,7 +345,6 @@ const renderImageToolbar = ({ nodes: { close } }) => [
       type: "primary",
       style: { marginLeft: "12px" },
       onClick: () => {
-        console.log(close);
         addUnitFormData.value.iconURL = imageIns.value.imageRef.currentSrc;
         message.info("已将图片地址存为本地资源");
       },
@@ -496,6 +475,9 @@ if (defaultDataType === "externalData") {
 } else if (defaultDataType === "default") {
   loadDefaultConfig();
 }
+const moveTo = (index, childIndex, item) => {
+  systemConfig.value.navList[index].data.splice(childIndex, 0, item);
+};
 </script>
 <style lang="stylus">
 body

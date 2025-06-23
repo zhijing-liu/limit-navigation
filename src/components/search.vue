@@ -98,7 +98,7 @@
       </NList>
     </NFlex>
     <NButton
-      v-if="settings.useSearchHistory && getSearchHistory.length > 0"
+      :disabled="!settings.useSearchHistory || getSearchHistory.length === 0"
       class="w-full!"
       type="primary"
       secondary
@@ -294,13 +294,16 @@ watch(
   },
 );
 window.addEventListener("keydown", (e) => {
-  if (e.ctrlKey && e.key === "s") {
+  if ((e.ctrlKey && e.code === "KeyS") || e.code === "Space") {
     e.stopPropagation();
     e.preventDefault();
   }
 });
 window.addEventListener("keyup", (e) => {
-  if (e.ctrlKey && e.code === "KeyS" && settings.useSearchShortcutKey) {
+  if (
+    ((e.ctrlKey && e.code === "KeyS") || e.code === "Space") &&
+    settings.useSearchShortcutKey
+  ) {
     searchDialogVisible.value = true;
     e.stopPropagation();
     e.preventDefault();
