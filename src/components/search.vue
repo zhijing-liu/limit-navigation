@@ -5,7 +5,7 @@
     :title="getLangData('搜索')"
     class="w-[600px]!"
     :closeOnEsc="!searchActiveItem"
-    :showIcon="false"
+    :icon="() => h(ScreenSearchDesktopTwotone)"
   >
     <NFlex vertical class="overflow-hidden h-[60vh] py-2">
       <NInputGroup>
@@ -120,12 +120,14 @@ import {
   getSearchSource,
   removeSearchHistory,
   searchDialogVisible,
+  settingDialogVisible,
   settings,
 } from "../stores.js";
 import {
   ArrowForwardFilled,
   SearchFilled,
   CloseOutlined,
+  ScreenSearchDesktopTwotone,
 } from "@vicons/material";
 import { getLangData } from "../lang";
 import { computed, h, watch } from "vue";
@@ -255,8 +257,10 @@ const searchIconRender = ({ option }) =>
       NButton,
       {
         circle: true,
+        secondary: settings.searchSource.url !== option.url,
         class: "rounded! m-1! border-0!",
-        type: settings.searchSource.url === option.url ? "primary" : "default",
+        strong: true,
+        type: "primary",
         onClick: () => {
           settings.searchSource = option;
           searchInputIns.value.focus();
@@ -294,15 +298,20 @@ watch(
   },
 );
 window.addEventListener("keydown", (e) => {
-  if ((e.ctrlKey && e.code === "KeyS") || e.code === "Space") {
+  if (
+    (e.ctrlKey && e.code === "KeyS") ||
+    (e.code === "Space" && !searchDialogVisible.value)
+  ) {
     e.stopPropagation();
     e.preventDefault();
   }
 });
 window.addEventListener("keyup", (e) => {
   if (
-    ((e.ctrlKey && e.code === "KeyS") || e.code === "Space") &&
-    settings.useSearchShortcutKey
+    ((e.ctrlKey && e.code === "KeyS") ||
+      (e.code === "Space" && !searchDialogVisible.value)) &&
+    settings.useSearchShortcutKey &&
+    !settingDialogVisible.value
   ) {
     searchDialogVisible.value = true;
     e.stopPropagation();

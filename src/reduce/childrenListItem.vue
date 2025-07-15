@@ -1,6 +1,6 @@
 <template>
   <NListItem
-    class="hover:bg-gray-600/40 rounded px-2! cursor-pointer py-2! bg-gray-300/20 mb-1 w-[600px] border-blue-400"
+    class="hover:bg-gray-600/40 rounded px-2! cursor-pointer py-2! bg-gray-300/20 mb-1 border-blue-400"
     ref="itemIns"
     :class="{
       'fixed!': dragItem.item?.url === unit.url,
@@ -12,7 +12,7 @@
     }"
     :style="getStyle"
   >
-    <NFlex justify="space-between" align="center">
+    <NFlex justify="space-between" align="center" class="w-[600px]">
       <span>{{ unit.label }}</span>
       <NFlex align="center">
         <NButton
@@ -20,21 +20,21 @@
           size="small"
           class="rounded!"
           type="primary"
-          @click="() => emits('add')"
+          @click="() => emits('edit')"
         >
           <template #icon><EditFilled /></template>
         </NButton>
         <NPopconfirm
           @positiveClick="() => emits('delete')"
-          negativeText="不了"
-          positiveText="是的"
+          :negativeText="getLangData('不了')"
+          :positiveText="getLangData('是的')"
         >
           <template #trigger>
             <NButton circle size="small" class="rounded!" type="error">
               <template #icon><DeleteForeverTwotone /></template>
             </NButton>
           </template>
-          确定要删除当前地址？
+          {{ getLangData("确定要删除当前地址？") }}
         </NPopconfirm>
         <NIcon class="h-full!" @mousedown="startDrag">
           <DragIndicatorFilled />
@@ -51,9 +51,10 @@ import {
   EditFilled,
 } from "@vicons/material";
 import { computed, ref } from "vue";
+import { getLangData } from "../lang/index.js";
 const { unit } = defineProps(["unit"]);
 import { dragIntoItem, dragItem } from "./store.js";
-const emits = defineEmits(["add", "delete", "moveTo"]);
+const emits = defineEmits(["edit", "delete", "moveTo"]);
 const getStyle = computed(() => {
   if (unit.url === dragItem.item?.url) {
     return `left:${dragItem.left}px;top:${dragItem.top}px;`;

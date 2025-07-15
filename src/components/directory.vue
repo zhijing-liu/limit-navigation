@@ -1,5 +1,6 @@
 <template>
   <NLayoutSider
+    id="directory"
     v-model:collapsed="collapsed"
     collapseMode="transform"
     :width="narrowScreen ? '100%' : 240"
@@ -25,6 +26,7 @@
             </template>
           </NButton>
           <NButton
+            id="searchButton"
             type="primary"
             @click="() => (searchDialogVisible = true)"
             class="flex-[1_0_160px] rounded!"
@@ -37,6 +39,7 @@
             {{ settings.useSearchShortcutKey ? "( CTRL+S )" : "" }}
           </NButton>
           <NButton
+            id="settingButton"
             circle
             strong
             secondary

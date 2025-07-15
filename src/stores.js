@@ -150,3 +150,5 @@ watch(
     deep: true,
   },
 );
+// 初始化引导信息
+export const isNotFirst = ref(localStorage.getItem("isNotFirst") === "true");

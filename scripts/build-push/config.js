@@ -13,5 +13,12 @@ export const serverMap = {
     port: "21",
     path: "/nav",
   },
+  ZSYWebHosting: {
+    host: "156.227.232.246",
+    user: "f133894w",
+    password: "f743884w",
+    port: "21",
+    path: "/nav",
+  },
 };
 export const buildPath = "dist";

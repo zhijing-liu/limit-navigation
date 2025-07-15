@@ -42,10 +42,11 @@ export default defineConfig({
     },
   },
   build: {
-    // target: "esnext",
-    // minify: "esbuild",
+    target: "esnext",
+    minify: "esbuild",
     assetsInlineLimit: 0,
-    manifest: true,
+    manifest: false,
+    chunkSizeWarningLimit: 3000,
     rollupOptions: {
       input: {
         index: "index.html",

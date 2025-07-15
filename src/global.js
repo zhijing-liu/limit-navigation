@@ -5,6 +5,7 @@ import {
   NConfigProvider,
   NGlobalStyle,
   NMessageProvider,
+  NNotificationProvider,
 } from "naive-ui";
 import { settings } from "./stores.js";
 import { hexToHsla } from "./utils.js";
@@ -27,8 +28,13 @@ export const getGlobal = (App) => ({
       {
         theme: settings.darkTheme ? darkTheme : lightTheme,
         class: "w-full",
-        themeOverrides,
+        themeOverrides: themeOverrides.value,
       },
-      () => [h(NMessageProvider, {}, () => [h(App)]), h(NGlobalStyle)],
+      () => [
+        h(NMessageProvider, {}, () => [
+          h(NNotificationProvider, {}, () => [h(App)]),
+        ]),
+        h(NGlobalStyle),
+      ],
     ),
 });

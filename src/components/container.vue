@@ -1,5 +1,6 @@
 <template>
   <NLayoutContent
+    id="container"
     class="h-full"
     contentClass="flex flex-col"
     :class="settings.darkTheme ? 'bg-neutral-800' : 'bg-neutral-50!'"
@@ -20,6 +21,7 @@
       :class="{ 'snap-y': settings.listScrollAdsorption }"
       :showDivider="false"
       v-if="disPlayNavList?.length > 0"
+      ref="listIns"
     >
       <template v-for="item in disPlayNavList">
         <NListItem
@@ -31,7 +33,7 @@
             :title="`${item.label} ${item.des ?? ''}`"
             :bordered="false"
             size="small"
-            class="bg-transparent!"
+            class="navUnit bg-transparent!"
           >
             <div
               class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-x-4 gap-y-6 items-start"
@@ -87,6 +89,20 @@
         </template>
       </NEmpty>
     </NFlex>
+    <NBackTop
+      v-if="!narrowScreen && listIns"
+      :listenTo="listIns?.$el"
+      :visibility-height="10"
+    >
+      <NIcon size="28">
+        <ArrowUpwardOutlined />
+      </NIcon>
+    </NBackTop>
+    <!--    <NFloatButton :right="10" :bottom="10" shape="square">-->
+    <!--      <NIcon>-->
+    <!--        <ArrowUpwardOutlined />-->
+    <!--      </NIcon>-->
+    <!--    </NFloatButton>-->
   </NLayoutContent>
 </template>
 <script setup>
@@ -99,9 +115,10 @@ import {
   narrowScreen,
   collapsed,
 } from "../stores.js";
-import { MenuFilled } from "@vicons/material";
+import { MenuFilled, ArrowUpwardOutlined } from "@vicons/material";
 import iconImage from "../assets/icon.png";
 import { getLangData } from "../lang/index.js";
+const listIns = ref();
 const disPlayNavList = computed(() => [
   {
     label: "常用",

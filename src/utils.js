@@ -53,7 +53,7 @@ export const loadConfig = async (urls) => {
   const data = await Promise.all(
     urls.map(({ url, success, error }) => {
       const urlIns = new URL(url, location.origin);
-      urlIns.searchParams.set("t", new Date().getTime().toString());
+      // urlIns.searchParams.set("t", new Date().getTime().toString());
       return fetch(urlIns, {
         method: "GET",
       })

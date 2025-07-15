@@ -9,15 +9,19 @@
     "reduce": "bun ./scripts/reduceSystemConfig/index.js",
     "Upload": "bun ./scripts/build-push/index.js",
     "UploadJY": "bun ./scripts/build-push/index.js server=JYWebHosting",
+    "UploadZSY": "bun ./scripts/build-push/index.js server=ZSYWebHosting",
     "updateSystemConfig": "bun ./scripts/build-push/updateSystemConfig.js",
     "updateSystemConfigJY": "bun ./scripts/build-push/updateSystemConfig.js server=JYWebHosting",
+    "updateSystemConfigZSY": "bun ./scripts/build-push/updateSystemConfig.js server=ZSYWebHosting",
     "lang": "bun ./scripts/translate/tool/index.js path=src/lang",
     "auto lang": "bun scripts/translate/index.js"
   },
   "dependencies": {
     "@pinyin-pro/data": "^1.2.0",
     "bun": "^1.2.13",
+    "driver.js": "^1.3.6",
     "fuse.js": "^7.1.0",
+    "install": "^0.13.0",
     "pinyin-pro": "^3.26.0",
     "vue": "^3.5.13"
   },
@@ -26,7 +30,7 @@
     "@vicons/material": "^0.13.0",
     "@vitejs/plugin-vue": "^5.2.2",
     "basic-ftp": "^5.0.5",
-    "naive-ui": "^2.41.0",
+    "naive-ui": "^2.42.0",
     "prettier": "^3.5.3",
     "rollup-plugin-visualizer": "^5.14.0",
     "stylus": "^0.64.0",
